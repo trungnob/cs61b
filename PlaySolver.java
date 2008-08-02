@@ -23,7 +23,7 @@ public class PlaySolver {
 		}
 		
 		BufferedReader reader = null;
-		BufferedReader writer = null;
+		//BufferedReader writer = null;
 		try {
 			reader = new BufferedReader (new FileReader (inputfileName));
 		} catch (Exception e) {
@@ -34,6 +34,9 @@ public class PlaySolver {
 		line = reader.readLine();
 		StringTokenizer tokens = new StringTokenizer (line, " ");
 		String [ ] token_array = new String [tokens.countTokens ( )];
+		token_array[0] = (String) tokens.nextElement ( );
+		token_array[1] = (String) tokens.nextElement ( );
+		
 		int row = Integer.parseInt(token_array[0]);
 		int col = Integer.parseInt(token_array[1]);
 		
@@ -42,11 +45,16 @@ public class PlaySolver {
 		while ((line=reader.readLine()) != null) {
 			tokens = new StringTokenizer (line, " ");
 			token_array = new String [tokens.countTokens ( )];
-			int block_len = Integer.parseInt(token_array[0]);
-			int block_wid = Integer.parseInt(token_array[1]);
-			int block_row = Integer.parseInt(token_array[2]);
-			int block_col = Integer.parseInt(token_array[3]);
+			int block_len = Integer.parseInt((String) tokens.nextElement ( ));
+			int block_wid = Integer.parseInt((String) tokens.nextElement ( ));
+			int block_row = Integer.parseInt((String) tokens.nextElement ( ));
+			int block_col = Integer.parseInt((String) tokens.nextElement ( ));
 			s0.adding_block(block_len, block_wid, block_row, block_col);
 		}
+		
+		s0.displayBoard();
+		
+		reader.close();  
+        //writer.close();
 	}
 }
