@@ -1,30 +1,58 @@
 
-public class block {
+public class block { 
 
-	private int block_len;
-	private int block_wid;
-	private int block_row;
-	private int block_col;
-	
+//	private int block_len;
+//	private int block_wid;
+//	private int block_row;
+//	private int block_col;
+	private BlockShape block_shape;
+	private Coordinate block_pos;
+	//private int ID; // ID is the identification number of block which help to distinguish two different block even though it have same shape. 
+	public block(){
+//		block_len = 0;
+//		block_wid = 0;
+		block_shape=new BlockShape();
+		block_pos=new Coordinate();
+	}
 	public block(int length, int width, int row, int col){
-		block_len = length;
-		block_wid = width;
-		block_row = row;
-		block_col = col;
+//		block_len = length;
+//		block_wid = width;
+//		block_row = row;
+//		block_col = col;
+		block_shape=new BlockShape(length,width);
+		block_pos=new Coordinate(row,col);
 	}
 	
+	public block(int length, int width, int row, int col, int IDnum){
+//		block_len = length;
+//		block_wid = width;
+//		block_row = row;
+//		block_col = col;
+		block_shape=new BlockShape(length,width);
+		block_pos=new Coordinate(row,col);
+//		ID=IDnum;
+	}
 	public int hashCode ( ) { 
-		return (block_len-1)*256^3 + (block_wid-1) * 256^2 + (block_row) * 256 + (block_col);
+		//return (block_len-1)*256^3 + (block_wid-1) * 256^2 + (block_row) * 256 + (block_col);
+		return 1 ; //---> I don't know yet 
 	}
 	
-	public boolean equals(Object obj){
-		if ( (this.block_row == ((block)obj).get_block_row()) && (this.block_col == ((block)obj).get_block_col()) 
-			 && (this.block_len == ((block)obj).get_block_len()) && (this.block_wid == ((block)obj).get_block_wid()) )
+	public boolean equals(Object obj){ // two equal blocks only have meaning when they are both on the same board.
+		if ( (this.get_block_row()== ((block)obj).get_block_row()) && (this.get_block_col() == ((block)obj).get_block_col()) 
+			 && (this.get_block_len() == ((block)obj).get_block_len()) && (this.get_block_wid() == ((block)obj).get_block_wid()) )
 			return true;
 		else
 			return false;
+//		return this.ID==((block)obj).ID;
 	}
 	
+//	public int getID(){
+//		return ID;
+//	}
+	
+	public boolean isSameShape(block toCompare){
+		return this.block_shape.equals(toCompare.block_shape);
+	}
 	/*public String toString(){
 	    return 	numtostring(block_len)+numtostring(block_wid)+numtostring(block_row)+numtostring(block_col);
 	}
@@ -41,19 +69,19 @@ public class block {
 	}*/
 	
 	public int get_block_row(){
-		return block_row;
+		return block_pos.getRow();
 	}
 	
 	public int get_block_col(){
-		return block_col;
+		return block_pos.getCol();
 	}
 	
 	public int get_block_len(){
-		return block_len;
+		return block_shape.getLength();
 	}
 	
 	public int get_block_wid(){
-		return block_wid;
+		return block_shape.getWidth();
 	}
 	/*
 	public static void main (String [ ] args){
