@@ -7,7 +7,7 @@ public class block {
 //	private int block_col;
 	private BlockShape block_shape;
 	private Coordinate block_pos;
-	//private int ID; // ID is the identification number of block which help to distinguish two different block even though it have same shape. 
+	private int ID; // ID is the identification number of block which help to distinguish two different block even though it have same shape. 
 	public block(){
 //		block_len = 0;
 //		block_wid = 0;
@@ -30,7 +30,7 @@ public class block {
 //		block_col = col;
 		block_shape=new BlockShape(length,width);
 		block_pos=new Coordinate(row,col);
-//		ID=IDnum;
+    	ID=IDnum;
 	}
 	public int hashCode ( ) { 
 		//return (block_len-1)*256^3 + (block_wid-1) * 256^2 + (block_row) * 256 + (block_col);
@@ -46,9 +46,9 @@ public class block {
 //		return this.ID==((block)obj).ID;
 	}
 	
-//	public int getID(){
-//		return ID;
-//	}
+	public int getID(){
+		return ID;
+	}
 	
 	public boolean isSameShape(block toCompare){
 		return this.block_shape.equals(toCompare.block_shape);
@@ -83,6 +83,28 @@ public class block {
 	public int get_block_wid(){
 		return block_shape.getWidth();
 	}
+	public void MoveTo(Coordinate To){
+		block_pos.setCol(To.getCol());
+		block_pos.setRow(To.getRow());
+	}
+	public void MoveTo(int Row, int Col){
+		block_pos.setCol(Col);
+		block_pos.setRow(Row);
+	}
+	public void MoveLeft(){
+	MoveTo(block_pos.getRow(),block_pos.getCol()-1);
+	}
+	public void MoveRight(){
+		MoveTo(block_pos.getRow(),block_pos.getCol()+this.get_block_wid());
+		}
+	public void MoveUp(){
+		MoveTo(block_pos.getRow()-1,block_pos.getCol());
+		}
+	public void MoveDown(){
+		MoveTo(block_pos.getRow()+this.get_block_len(),block_pos.getCol());
+		}
+	
+	
 	/*
 	public static void main (String [ ] args){
 		block b0 = new block(10,1,1,1);
