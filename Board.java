@@ -17,7 +17,7 @@ public class Board {
 	public HashSet<block> block_set = new HashSet<block> ();
 	
 	private static final int CELL_EMPTY = 0;
-	private static final int CELL_OCCUPIED = 1;
+	private static final int CELL_OCCUPIED = 0;
 	
 	public int getRows() {
 		return board_map.length;
@@ -69,7 +69,6 @@ public class Board {
     	return 0;
     }
 	
-    
     public void displayBoard(){
     	int i,j;
     	for (i=0; i<getRows(); i++){
