@@ -118,6 +118,23 @@ public class Solver {
         System.out.println();
        ArrayList<block>theGoal= getGoal(finalConfigName);
         System.out.println(my_board.compareToGoal(theGoal));
+        block b=my_board.findBlockByID(1);
+        if (b==null) System.out.println("It is null!!\n");else 
+        my_board.MoveRight(b);
+        my_board.displayBoard();
+        b=my_board.findBlockByID(3);
+        my_board.MoveUp(b);
+        System.out.println();
+        my_board.displayBoard();
+        b=my_board.findBlockByID(6);
+        my_board.MoveUp(b);
+        System.out.println();
+        my_board.displayBoard();
+        b=my_board.findBlockByID(2);
+        my_board.MoveLeft(b);
+        System.out.println();
+        my_board.displayBoard();
+        
         //if (my_board.equal(board_final) )
         //	System.out.println("the compare is good");
 		
