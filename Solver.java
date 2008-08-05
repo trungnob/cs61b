@@ -34,6 +34,10 @@ public class Solver {
 			int b_col = Integer.parseInt((String) tokens.nextElement ( ));
 			
 			board.adding_block(b_len, b_wid, b_row, b_col);
+			//board.block_set.add((new block(b_len, b_wid, b_row, b_col)));
+			//block b0 = board.adding_block(b_len, b_wid, b_row, b_col);
+			//board.block_set.add(b0);
+			//board.block_set = board.adding_block(b_len, b_wid, b_row, b_col);
 		}
 		
 		board.displayBoard();
@@ -55,8 +59,13 @@ public class Solver {
 			System.exit (1);
 		}
 		String line = null;
-
+//		line = initConfig.readLine();
 		StringTokenizer tokens = new StringTokenizer (" ");
+//		
+		//int row = Integer.parseInt((String) tokens.nextElement ( ));
+		//int col = Integer.parseInt((String) tokens.nextElement ( ));
+		
+		//Board board= new Board(row, col);
 		
 		while ((line=initConfig.readLine()) != null) {
 			tokens = new StringTokenizer (line, " ");
@@ -67,6 +76,10 @@ public class Solver {
 			
 			block b= new block(b_len, b_wid, b_row, b_col);
 			result.add(b);
+			//board.block_set.add((new block(b_len, b_wid, b_row, b_col)));
+			//block b0 = board.adding_block(b_len, b_wid, b_row, b_col);
+			//board.block_set.add(b0);
+			//board.block_set = board.adding_block(b_len, b_wid, b_row, b_col);
 		}
 		
 		System.out.println("Goal has "+ result.size()+" blocks");
@@ -81,7 +94,92 @@ public class Solver {
 		
 		return false;
 	}
-////////////////////////////////////////////////////////////////////////////////////////
+
+/*	
+	
+    public Board generatemove(Board brd){
+    	String inputConfigName = "";
+    	Board board;
+    	Iterator <block> iter = brd.getblock().iterator();
+    	while (iter.hasNext()){
+    		block b = iter.next();
+    		if (brd.MoveRight(b)){
+    			while (iter.hasNext()){
+    				board= new Board(brd.getRows(), brd.getCols());
+    				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    				b = iter.next();
+    			}
+    		}else if (brd.MoveUp(b)){
+    			while (iter.hasNext()){
+    				board= new Board(brd.getRows(), brd.getCols());
+    				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    				b = iter.next();
+    			}
+    		}else if (brd.MoveLeft(b)){
+    			while (iter.hasNext()){
+    				board= new Board(brd.getRows(), brd.getCols());
+    				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    				b = iter.next();
+    			}
+    		}else if (brd.MoveDown(b)){
+    			while (iter.hasNext()){
+    				board= new Board(brd.getRows(), brd.getCols());
+    				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    				b = iter.next();
+    			}
+    		}else{}
+    	}
+        return board;
+    }
+	*/
+	
+    public Board generatemove(Board brd){
+    	
+    	
+    	
+    	Board board;
+    	Iterator <block> iter = brd.getblock().iterator();
+    	block b = iter.next();
+    	if (brd.MoveRight(b)){
+    		board= new Board(brd.getRows(), brd.getCols());
+    		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		return board;
+    	}else if (brd.MoveUp(b)){
+    		board= new Board(brd.getRows(), brd.getCols());
+    		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		return board;
+    	}else if (brd.MoveLeft(b)){
+    		board= new Board(brd.getRows(), brd.getCols());
+    		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		return board;
+    	}else if (brd.MoveDown(b)){
+    		board= new Board(brd.getRows(), brd.getCols());
+    		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		return board;
+    	}else{
+    		return null;
+    	}
+    }
+    
+    public void play(Board brd){
+    	Board board = null;
+    	Iterator <Board> iter = brd.getsibblings().iterator();
+    	if (generatemove(brd)!= null)
+    		board =generatemove(brd);
+    	while (generatemove(brd) != null){
+    		board.addsibblings(generatemove(brd));
+    	}
+    	brd.addleftmostchild(board);
+    	while(iter.hasNext()){
+    		play(iter.next());
+    	}
+    }
+	
+	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	public static void main (String [ ] args)  throws IOException{
@@ -99,11 +197,13 @@ public class Solver {
 			System.exit (0);
 		}
 		
+
+      /*  
         Board my_board;//board_final;
         
         my_board = board_setup(inputConfigName);
         System.out.println();
-        /*ArrayList<block>theGoal= getGoal(finalConfigName);
+       ArrayList<block>theGoal= getGoal(finalConfigName);
         System.out.println(my_board.compareToGoal(theGoal));
         block b=my_board.findBlockByID(1);
         if (b==null) System.out.println("It is null!!\n");else 
@@ -120,13 +220,10 @@ public class Solver {
         b=my_board.findBlockByID(2);
         my_board.MoveLeft(b);
         System.out.println();
-        my_board.displayBoard();*/
-        Board check_board = board_setup(finalConfigName);
-        System.out.println("checking :" + my_board.equals(check_board));
-        
+        my_board.displayBoard();
         
         //if (my_board.equal(board_final) )
         //	System.out.println("the compare is good");
-		
+		*/
 	}
 }
