@@ -53,21 +53,20 @@ public class block {
 	public boolean isSameShape(block toCompare){
 		return this.block_shape.equals(toCompare.block_shape);
 	}
-	
-	public String toString(){
-	    return 	numtostring(get_block_len())+numtostring(get_block_wid())+numtostring(get_block_row())+numtostring(get_block_col());
+	/*public String toString(){
+	    return 	numtostring(block_len)+numtostring(block_wid)+numtostring(block_row)+numtostring(block_col);
 	}
 	
 	public String numtostring(int num){
 		if (num <10){
-			//System.out.println(num);
-			//System.out.println("00"+Integer.toString(num));
+			System.out.println(num);
+			System.out.println("00"+Integer.toString(num));
 			return "00"+Integer.toString(num);}
 		else if (num <100)
 		    return "0"+Integer.toString(num);
 		else
 			return ""+Integer.toString(num);
-	}
+	}*/
 	
 	public int get_block_row(){
 		return block_pos.getRow();
@@ -96,15 +95,13 @@ public class block {
 	MoveTo(block_pos.getRow(),block_pos.getCol()-1);
 	}
 	public void MoveRight(){
-		//MoveTo(block_pos.getRow(),block_pos.getCol()+this.get_block_wid());
-		MoveTo(block_pos.getRow(),block_pos.getCol()+1);
+		MoveTo(block_pos.getRow(),block_pos.getCol()+this.get_block_wid());
 		}
 	public void MoveUp(){
 		MoveTo(block_pos.getRow()-1,block_pos.getCol());
 		}
 	public void MoveDown(){
-		//MoveTo(block_pos.getRow()+this.get_block_len(),block_pos.getCol());
-		MoveTo(block_pos.getRow()+1,block_pos.getCol());
+		MoveTo(block_pos.getRow()+this.get_block_len(),block_pos.getCol());
 		}
 	
 	
