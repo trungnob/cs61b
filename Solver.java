@@ -5,7 +5,7 @@ import java.util.*;
 
 
 public class Solver {
-
+	HashSet<Board> tray = new HashSet<Board> ();
 	
 ////////////////////get the initial configuration and print the board //////////////////
 	public static Board board_setup(String filename) throws IOException{
@@ -95,84 +95,169 @@ public class Solver {
 		return false;
 	}
 
-/*	
-	
-    public Board generatemove(Board brd){
-    	String inputConfigName = "";
-    	Board board;
+
+ /*   public Board generatemove(Board brd){
+    	//String inputConfigName = "";
+    	Board board = null;
     	Iterator <block> iter = brd.getblock().iterator();
     	while (iter.hasNext()){
     		block b = iter.next();
     		if (brd.MoveRight(b)){
-    			while (iter.hasNext()){
     				board= new Board(brd.getRows(), brd.getCols());
     				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
-    				b = iter.next();
-    			}
     		}else if (brd.MoveUp(b)){
-    			while (iter.hasNext()){
     				board= new Board(brd.getRows(), brd.getCols());
     				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
-    				b = iter.next();
-    			}
     		}else if (brd.MoveLeft(b)){
-    			while (iter.hasNext()){
     				board= new Board(brd.getRows(), brd.getCols());
     				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
-    				b = iter.next();
-    			}
     		}else if (brd.MoveDown(b)){
-    			while (iter.hasNext()){
     				board= new Board(brd.getRows(), brd.getCols());
     				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
-    				b = iter.next();
-    			}
     		}else{}
     	}
         return board;
     }
 	*/
-	
-    public Board generatemove(Board brd){
-    	
-    	
-    	
+    
+	public Board generaterightmove(Board brd, block b){
     	Board board;
+    	Board temp = brd;
+    	brd.MoveRight(b);
+    	board= new Board(brd.getRows(), brd.getCols());
+    	board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    	if (tray.contains(board)){
+    		brd = temp;
+    		return generateleftmove(brd, b);}
+    	else
+    		tray.add(board);
+    	return board;
+	}
+	
+	
+	public Board generateleftmove(Board brd, block b){
+    	Board board;
+    	Board temp = brd;
+    	brd.MoveLeft(b);
+    	board= new Board(brd.getRows(), brd.getCols());
+    	board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    	if (tray.contains(board)){
+    		brd = temp;
+    		return generateupmove(brd, b);}
+    	else
+    		tray.add(board);
+    	return board;
+	}
+	
+	public Board generateupmove(Board brd, block b){
+    	Board board;
+    	Board temp = brd;
+    	brd.MoveUp(b);
+    	board= new Board(brd.getRows(), brd.getCols());
+    	board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    	if (tray.contains(board)){
+    		brd = temp;
+    		return generatedownmove(brd, b);}
+    	else
+    		tray.add(board);
+    	return board;
+	}
+	
+	public Board generatedownmove(Board brd, block b){
+    	Board board;
+    	brd.MoveUp(b);
+    	board= new Board(brd.getRows(), brd.getCols());
+    	board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    	if (tray.contains(board))
+    		return null;
+    	else
+    		tray.add(board);
+    	return board;
+	}
+	
+    	
+    	public Board generatemove(Board brd){
+        	Board myboard;
+    		Iterator <block> iter = brd.getblock().iterator();
+        	block b = iter.next();
+        	myboard = generaterightmove(brd, b);
+        	while (myboard == null && iter.hasNext()){
+        		b = iter.next();
+        		myboard = generaterightmove(brd, b);}
+        	return myboard;      	
+    	}	
+    	
+	/*
+	public Board generatemove(Board brd){
+    	Board board;
+    	Board temp = brd;
     	Iterator <block> iter = brd.getblock().iterator();
     	block b = iter.next();
+    	while ()
     	if (brd.MoveRight(b)){
     		board= new Board(brd.getRows(), brd.getCols());
     		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		if (tray.contains(board)){
+    			brd = temp;
+    			return generatemove(brd);}
+    		else
+        		tray.add(board);
     		return board;
     	}else if (brd.MoveUp(b)){
     		board= new Board(brd.getRows(), brd.getCols());
     		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		if (tray.contains(board)){
+    			brd = temp;
+    			return generatemove(brd);}
+    		else
+        		tray.add(board);
     		return board;
     	}else if (brd.MoveLeft(b)){
     		board= new Board(brd.getRows(), brd.getCols());
     		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		if (tray.contains(board)){
+    			brd = temp;
+    			return generatemove(brd);}
+    		else
+        		tray.add(board);
     		return board;
     	}else if (brd.MoveDown(b)){
     		board= new Board(brd.getRows(), brd.getCols());
     		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		if (tray.contains(board)){
+    			brd = temp;
+    			return generatemove(brd);}
+    		else
+        		tray.add(board);
     		return board;
     	}else{
     		return null;
     	}
-    }
+    }*/
     
-    public void play(Board brd){
-    	Board board = null;
-    	Iterator <Board> iter = brd.getsibblings().iterator();
-    	if (generatemove(brd)!= null)
-    		board =generatemove(brd);
-    	while (generatemove(brd) != null){
-    		board.addsibblings(generatemove(brd));
+    public boolean play(Board brd, Board fnl){
+    	Board board, ref = null;
+    	Board head = null;
+    	if (brd == null)
+    		return false;
+    	if (brd.equals(fnl))
+    		return true;
+    	ref = board = head = generatemove(brd);
+    	if (head == null)
+    		return false;
+    	while (board != null){
+    		board = generatemove(brd);
+    		ref.mysibbling = board;
+    		ref = board;
     	}
-    	brd.addleftmostchild(board);
-    	while(iter.hasNext()){
-    		play(iter.next());
+    	brd.Leftmostchild = head;
+    	while (!play(head, fnl)){
+    		head = head.mysibbling;
     	}
+    	if (head == null)
+    		return false;
+    	
+    	return true;
     }
 	
 	
@@ -197,6 +282,14 @@ public class Solver {
 			System.exit (0);
 		}
 		
+        Board my_board, finalboard;//board_final;
+        my_board = board_setup(inputConfigName);
+        finalboard = board_setup(finalConfigName);
+         if (play(my_board, finalboard))
+        	 System.out.print("No solution exists");
+         else
+        	 System.out.print("Solution found");
+        
 
       /*  
         Board my_board;//board_final;
