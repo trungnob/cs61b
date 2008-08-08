@@ -90,10 +90,10 @@ public class Solver {
 		
 	}
 	
-	public static boolean isAtGoal(Board playBoard, Board goalBoard){
-		
-		return false;
-	}
+//	public static boolean isAtGoal(Board playBoard, Board goalBoard){
+//		
+//		return false;
+//	}
 
 
  /*   public Board generatemove(Board brd){

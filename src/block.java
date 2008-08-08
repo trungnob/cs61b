@@ -8,6 +8,10 @@ public class block {
 	private BlockShape block_shape;
 	private Coordinate block_pos;
 	private int ID; // ID is the identification number of block which help to distinguish two different block even though it have same shape. 
+	public boolean canMoveLeft;
+	public boolean canMoveRight;
+	public boolean canMoveUp;
+	public boolean canMoveDown;
 	public block(){
 //		block_len = 0;
 //		block_wid = 0;
