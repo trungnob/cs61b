@@ -18,8 +18,10 @@ public class Board {
 	
 	private int block_map [][];
 	
-	//public HashSet<block> block_set = new HashSet<block> ();
-	  private ArrayList<block> blockArray;
+	public Board mysibbling = null;
+	public Board Leftmostchild = null;
+	
+	private ArrayList<block> blockArray = null;
 	private static final int CELL_EMPTY = 0;
 	private static final int CELL_OCCUPIED = 1;
 	
@@ -29,6 +31,16 @@ public class Board {
 	
 	public int getCols() {
 		return board_map[0].length;
+	}
+	
+
+	public void addblocks(block myblocks1){
+		blockArray.add(myblocks1);
+	}
+
+	
+	public ArrayList <block> getblock(){
+		return blockArray;
 	}
 	
 	
@@ -155,6 +167,7 @@ public boolean EmptyBlock(Coordinate c, BlockShape bs){ // check a block is empt
 	 return true;
 	}
 }
+
 public boolean EmptyNeighborLeft(block b){ 
 BlockShape bs=new BlockShape(b.get_block_len(),1);
 Coordinate c= new Coordinate(b.get_block_row(),b.get_block_col()-1);
@@ -302,6 +315,24 @@ public boolean MoveDown(block b){
 		}
 	else return false;
 	}
+
+	public int hashCode ( ) { 
+		return board_map.toString().hashCode(); 
+	}
+
+	public boolean equals(Object obj){ 
+		Iterator<block> itr0 = ((Board) obj).blockArray.iterator();
+		if ( this.blockArray.size() != ((Board) obj).blockArray.size() )
+			return false;
+		while (itr0.hasNext()){
+			block b0 = itr0.next();
+			if ( !this.blockArray.contains(b0) )
+				return false;
+		}	
+		return true;	
+	}
+
+
 public boolean compareToGoal(ArrayList<block> Goal ){
 	 
 	  

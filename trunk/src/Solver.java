@@ -5,7 +5,7 @@ import java.util.*;
 
 
 public class Solver {
-
+	static HashSet<Board> tray = new HashSet<Board> ();
 	
 ////////////////////get the initial configuration and print the board //////////////////
 	public static Board board_setup(String filename) throws IOException{
@@ -90,11 +90,181 @@ public class Solver {
 		
 	}
 	
-	public static boolean isAtGoal(Board playBoard, Board goalBoard){
-		
-		return false;
+//	public static boolean isAtGoal(Board playBoard, Board goalBoard){
+//		
+//		return false;
+//	}
+
+
+ /*   public Board generatemove(Board brd){
+    	//String inputConfigName = "";
+    	Board board = null;
+    	Iterator <block> iter = brd.getblock().iterator();
+    	while (iter.hasNext()){
+    		block b = iter.next();
+    		if (brd.MoveRight(b)){
+    				board= new Board(brd.getRows(), brd.getCols());
+    				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		}else if (brd.MoveUp(b)){
+    				board= new Board(brd.getRows(), brd.getCols());
+    				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		}else if (brd.MoveLeft(b)){
+    				board= new Board(brd.getRows(), brd.getCols());
+    				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		}else if (brd.MoveDown(b)){
+    				board= new Board(brd.getRows(), brd.getCols());
+    				board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		}else{}
+    	}
+        return board;
+    }
+	*/
+    
+	public static Board generaterightmove(Board brd, block b){
+    	Board board;
+    	Board temp = brd;
+    	brd.MoveRight(b);
+    	board= new Board(brd.getRows(), brd.getCols());
+    	board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    	if (tray.contains(board)){
+    		brd = temp;
+    		return generateleftmove(brd, b);}
+    	else
+    		tray.add(board);
+    	return board;
 	}
-////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	public static Board generateleftmove(Board brd, block b){
+    	Board board;
+    	Board temp = brd;
+    	brd.MoveLeft(b);
+    	board= new Board(brd.getRows(), brd.getCols());
+    	board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    	if (tray.contains(board)){
+    		brd = temp;
+    		return generateupmove(brd, b);}
+    	else
+    		tray.add(board);
+    	return board;
+	}
+	
+	public static Board generateupmove(Board brd, block b){
+    	Board board;
+    	Board temp = brd;
+    	brd.MoveUp(b);
+    	board= new Board(brd.getRows(), brd.getCols());
+    	board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    	if (tray.contains(board)){
+    		brd = temp;
+    		return generatedownmove(brd, b);}
+    	else
+    		tray.add(board);
+    	return board;
+	}
+	
+	public static Board generatedownmove(Board brd, block b){
+    	Board board;
+    	brd.MoveUp(b);
+    	board= new Board(brd.getRows(), brd.getCols());
+    	board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    	if (tray.contains(board))
+    		return null;
+    	else
+    		tray.add(board);
+    	return board;
+	}
+	
+    	
+    	public static Board generatemove(Board brd){
+        	Board myboard;
+    		Iterator <block> iter = brd.getblock().iterator();
+        	block b = iter.next();
+        	myboard = generaterightmove(brd, b);
+        	while (myboard == null && iter.hasNext()){
+        		b = iter.next();
+        		myboard = generaterightmove(brd, b);}
+        	return myboard;      	
+    	}	
+    	
+	/*
+	public Board generatemove(Board brd){
+    	Board board;
+    	Board temp = brd;
+    	Iterator <block> iter = brd.getblock().iterator();
+    	block b = iter.next();
+    	while ()
+    	if (brd.MoveRight(b)){
+    		board= new Board(brd.getRows(), brd.getCols());
+    		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		if (tray.contains(board)){
+    			brd = temp;
+    			return generatemove(brd);}
+    		else
+        		tray.add(board);
+    		return board;
+    	}else if (brd.MoveUp(b)){
+    		board= new Board(brd.getRows(), brd.getCols());
+    		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		if (tray.contains(board)){
+    			brd = temp;
+    			return generatemove(brd);}
+    		else
+        		tray.add(board);
+    		return board;
+    	}else if (brd.MoveLeft(b)){
+    		board= new Board(brd.getRows(), brd.getCols());
+    		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		if (tray.contains(board)){
+    			brd = temp;
+    			return generatemove(brd);}
+    		else
+        		tray.add(board);
+    		return board;
+    	}else if (brd.MoveDown(b)){
+    		board= new Board(brd.getRows(), brd.getCols());
+    		board.adding_block(b.get_block_len(), b.get_block_wid(), b.get_block_row(), b.get_block_col());
+    		if (tray.contains(board)){
+    			brd = temp;
+    			return generatemove(brd);}
+    		else
+        		tray.add(board);
+    		return board;
+    	}else{
+    		return null;
+    	}
+    }*/
+    
+    public static boolean play(Board brd, Board fnl){
+    	Board board, ref = null;
+    	Board head = null;
+    	if (brd == null)
+    		return false;
+    	if (brd.equals(fnl))
+    		return true;
+    	ref = board = head = generatemove(brd);
+    	if (head == null)
+    		return false;
+    	while (board != null){
+    		board = generatemove(brd);
+    		ref.mysibbling = board;
+    		ref = board;
+    	}
+    	brd.Leftmostchild = head;
+    	while (!play(head, fnl)){
+    		head = head.mysibbling;
+    	}
+    	if (head == null)
+    		return false;
+    	
+    	return true;
+    }
+	
+	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	public static void main (String [ ] args)  throws IOException{
@@ -112,6 +282,16 @@ public class Solver {
 			System.exit (0);
 		}
 		
+        Board my_board, finalboard;//board_final;
+        my_board = board_setup(inputConfigName);
+        finalboard = board_setup(finalConfigName);
+         if (play(my_board, finalboard))
+        	 System.out.print("No solution exists");
+         else
+        	 System.out.print("Solution found");
+        
+
+      /*  
         Board my_board;//board_final;
         
         my_board = board_setup(inputConfigName);
@@ -137,6 +317,6 @@ public class Solver {
         
         //if (my_board.equal(board_final) )
         //	System.out.println("the compare is good");
-		
+		*/
 	}
 }
