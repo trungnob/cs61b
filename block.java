@@ -26,13 +26,23 @@ public class block {
 		ID  = IDnum;
 	}
 	
-	public boolean equals(Object obj){ // two equal blocks only have meaning when they are both on the same board.
-		if ( (this.getrow()== ((block)obj).getrow()) && (this.getcol() == ((block)obj).getcol()) 
-			 && (this.getlength() == ((block)obj).getlength()) && (this.getwidth() == ((block)obj).getwidth()) )
-			return true;
-		else
-			return false;
+	
+	public int compare(block o1, block o2){
+		if (o1.getrow() < o2.getrow() || ((o1.getrow() == o2.getrow() && o1.getcol() < o2.getcol())))
+			return -1;
+		else if (o1.getrow() == o2.getrow() && o1.getcol() == o2.getcol())
+			return 0;
+		else 
+			return 1;
 	}
+	
+    public boolean equals(Object o){
+    	if (this.getcol() == ((block) o).getcol() && this.getrow() == ((block) o).getrow() && this.getlength() == ((block) o).getlength() && 
+    			this.getID() == ((block) o).getID() && this.getwidth() == ((block) o).getwidth())
+    		return true;
+    	else
+    		return false;
+    }
 
 	public int getID(){
 		return ID;

@@ -300,14 +300,18 @@ public class Solver {
 			System.out.println("Wrong number of arguments");	
 			System.exit (0);
 		}
-		Board my_board = new Board(40, 50);
-		my_board.adding_block(1, 1, 3, 3);
-		my_board.adding_block(1, 1, 6, 6);
-		my_board.adding_block(1, 1, 10, 10);
-		my_board.adding_block(1, 1, 4, 4);
-		my_board.adding_block(1, 1, 0, 0);
-		my_board.adding_block(1, 1, 2, 2);	
-		my_board.adding_block(1, 1, 1, 1);	
+		Board my_board = new Board(20, 20);
+		my_board.adding_block(1, 1, 1, 1);
+		my_board.adding_block(1, 2, 0, 0);
+		my_board.adding_block(1, 1, 0, 2);
+		my_board.adding_block(1, 1, 2, 2);
+		my_board.adding_block(1, 1, 1, 0);
+		my_board.adding_block(1, 2, 3, 1);
+		my_board.adding_block(1, 1, 3, 0);
+		my_board.adding_block(7, 7, 5, 5);
+		my_board.adding_block(1, 1, 5, 0);
+		my_board.adding_block(1, 1, 19, 19);
+		my_board.displayboard();
 		my_board.display();
         /*
         Board my_board, finalboard;//board_final;
