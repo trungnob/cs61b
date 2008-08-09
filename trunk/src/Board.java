@@ -15,13 +15,15 @@ public class Board {
 	private int block_num = 0;
 	
 	private int board_map [][];
-	
+	public ArrayList<Coordinate> emptyCells;
 	private int block_map [][];
-	
 	public Board mysibbling = null;
 	public Board Leftmostchild = null;
-	
-	private ArrayList<block> blockArray = null;
+	public ArrayList<block> blockArray = null;
+	public ArrayList<block> movableBlockLeft=null;
+	public ArrayList<block> movableBlockRight=null;
+	public ArrayList<block> movableBlockUp=null;
+	public ArrayList<block> movableBlockDown=null;
 	private static final int CELL_EMPTY = 0;
 	private static final int CELL_OCCUPIED = 1;
 	
@@ -35,7 +37,9 @@ public class Board {
 	
 
 	public void addblocks(block myblocks1){
-		blockArray.add(myblocks1);
+		
+		this.adding_block(myblocks1.get_block_len(), myblocks1.get_block_wid(),myblocks1.get_block_row() ,myblocks1.get_block_col());
+		
 	}
 
 	
@@ -54,6 +58,11 @@ public class Board {
         	col = getCols();
         	for (i=0; i<row; i++)
         		for (j=0; j<col; j++){
+        			emptyCells.add(new Coordinate(i,j));
+        			movableBlockLeft=new ArrayList<block>();
+        			movableBlockRight=new ArrayList<block>();
+        			movableBlockUp=new ArrayList<block>();
+        			movableBlockDown=new ArrayList<block>();
         			board_map[i][j] = CELL_EMPTY;
         			block_map[i][j] = 0;
         		}
@@ -66,6 +75,7 @@ public class Board {
     	    board_map = new int[newRows][newCols];
     	    block_map = new int[newRows][newCols];
     	    //blockArray= new block[numberOfBlock];
+    	    emptyCells = new ArrayList<Coordinate>();
     	    blockArray=new ArrayList<block>();
     	    resetboard_map();
     	}
@@ -83,13 +93,16 @@ public class Board {
     			if (board_map[i][j] != CELL_EMPTY)
     				return 1;
     			board_map[i][j] = CELL_OCCUPIED;
+    			int index=emptyCells.indexOf(new Coordinate(i,j));
+    			if (index!=-1)
+    			emptyCells.remove(index);
     			block_map[i][j] = block_num; // set board_map position to be occupied;
     		}
     	}
     	block b0 = new block(len, wid, row, col,block_num);//use  block_num as a identification number.
     	blockArray.add(b0);
-    //	block_set.add(b0);
     	block_num++;
+    	this.constructListofMovableBlocks();
     	return 0;
     }
 	
@@ -107,19 +120,22 @@ public class Board {
     		System.out.println();
     	}
     }
+    public void displayBoard_db(){
+    	int i,j;
+    	for (i=0; i<getRows(); i++){
+    		for (j=0; j<getCols(); j++){
+    			if (block_map[i][j]>99)
+    				System.out.print(" "+board_map[i][j]);
+    			else if (block_map[i][j]>9)
+    				System.out.print("  "+board_map[i][j]);
+    			else
+    				System.out.print("   "+board_map[i][j]);
+    		}
+    		System.out.println();
+    	}
+    } 
     
-//    public boolean equals(Board board_to_compare){ // this seems  like just check whether or not the board contain the block within the other board
-//    	if ( (board_to_compare.getRows()!=this.getRows())
-//    			|| (board_to_compare.getCols()!=this.getCols()) )
-//    		return false;
-//    	Iterator<block> iter = board_to_compare.block_set.iterator();
-//    	while(iter.hasNext()){
-//    		block b0 = iter.next();
-//    		if (!this.block_set.contains(b0))
-//    			return false;
-//    	}
-//    	return true;
-//    }
+
   public block findBlockByID(int ID){
 	  block result=null;
 	  for (Iterator<block> ite=blockArray.iterator();ite.hasNext();){
@@ -147,7 +163,23 @@ public boolean EmptyCell(Coordinate c){
 	}
 		
 }
-
+public void constructListofMovableBlocks(){
+//	movableBlockUp.removeAll(movableBlockUp);
+//	movableBlockDown.removeAll(movableBlockDown);
+//	movableBlockRight.removeAll(movableBlockRight);
+//	movableBlockLeft.removeAll(movableBlockLeft);
+	movableBlockUp=new ArrayList<block>();
+	movableBlockDown=new ArrayList<block>();
+	movableBlockLeft=new ArrayList<block>();
+	movableBlockRight=new ArrayList<block>();
+  for (Iterator<block> iter = blockArray.iterator();iter.hasNext();){
+	 block b = iter.next();
+	 if ((!this.movableBlockUp.contains(b))&&(this.EmptyNeighborUp(b))) movableBlockUp.add(b); 
+	 if ((!this.movableBlockDown.contains(b))&&(this.EmptyNeighborDown(b))) movableBlockDown.add(b);
+	 if ((!this.movableBlockLeft.contains(b))&&(this.EmptyNeighborLeft(b))) movableBlockLeft.add(b);
+	 if ((!this.movableBlockRight.contains(b))&&(this.EmptyNeighborRight(b))) movableBlockRight.add(b);
+  }
+}
 public boolean EmptyBlock(Coordinate c, BlockShape bs){ // check a block is empty or not start at its  up left conner
 	int row=c.getRow(),
 	 col=c.getCol(),
@@ -175,7 +207,7 @@ return EmptyBlock(c,bs);
 }
 public boolean EmptyNeighborRight(block b){ 
 	BlockShape bs=new BlockShape(b.get_block_len(),1);
-	Coordinate c= new Coordinate(b.get_block_row(),b.get_block_col()+1);
+	Coordinate c= new Coordinate(b.get_block_row(),b.get_block_col()+b.get_block_wid());
 	return EmptyBlock(c,bs);	
 }
 public boolean EmptyNeighborUp(block b){ 
@@ -185,7 +217,7 @@ public boolean EmptyNeighborUp(block b){
 }
 public boolean EmptyNeighborDown(block b){ 
 	BlockShape bs=new BlockShape(1,b.get_block_wid());
-	Coordinate c= new Coordinate(b.get_block_row()+1,b.get_block_col());
+	Coordinate c= new Coordinate(b.get_block_row()+b.get_block_len(),b.get_block_col());
 	return EmptyBlock(c,bs);	
 }
 public void setEmpty(Coordinate c, BlockShape bs){
@@ -224,6 +256,7 @@ public void setBlockNum(Coordinate c, BlockShape bs,int num){
 	for (int i = row; i<row+len;i++ )
 		for (int j= col;j<col+wid;j++ )
 		{ 
+		  board_map[i][j]=CELL_OCCUPIED;	
 		  block_map[i][j]=num;
 		}
 	}
@@ -344,5 +377,33 @@ public boolean compareToGoal(ArrayList<block> Goal ){
   	}
   	return true;
   }
-  
+public Object clone(){
+	Board result= new Board(this.getRows(),this.getCols());
+	for (Iterator<block> iter = blockArray.iterator();iter.hasNext();)
+	{
+		block b= iter.next();
+	result.addblocks(b);
+	
+	}
+	return result;
+}
+public static void main (String [ ] args){
+	  Board newBoard= new Board(6,5);
+	  block b1= new block(1,1,1,2);
+	  block b2=new block (2,2,3,3);
+	 // block b3=new block (1,1,4,3);
+	  newBoard.addblocks(b1);
+	  newBoard.addblocks(b2);
+	 // newBoard.addblocks(b3);
+	  newBoard.displayBoard();
+	  //System.out.println(newBoard.EmptyNeighborDown(b1));
+	  System.out.println(newBoard.EmptyNeighborDown(b2));
+	  System.out.println(newBoard.EmptyNeighborRight(b2));
+	  System.out.println(newBoard.EmptyNeighborLeft(b2));
+	  System.out.println(newBoard.EmptyNeighborUp(b2));
+	  System.out.println(newBoard.EmptyNeighborUp(b2));
+	  System.out.println(newBoard.emptyCells.size());
+	 Object[] blah=newBoard.emptyCells.toArray();
+	 System.out.println(newBoard.emptyCells.size());
+  }
 }
