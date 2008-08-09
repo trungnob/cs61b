@@ -1,0 +1,17 @@
+
+--This line, and those below, will be ignored--
+
+AM   BlockShape.class
+AM   Tray.class
+A    svn-commit.tmp.~3~
+A    Solver.java
+A    BlockShape.java
+AM   Board.class
+AM   Coordinate.class
+AM   Tray$TrayNode.class
+AM   block.class
+A    Tray.java
+A    Board.java
+A    Coordinate.java
+A    block.java
+AM   Solver.class

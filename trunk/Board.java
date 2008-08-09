@@ -10,16 +10,13 @@ public class Board{
 	
 	// block_num keep track of which block we are dealing w/ . 
 	// This is just for displaying purpose. --Trung add 
-	private int block_num = 0;
-	private int block_map [];
+	private int block_num = 1;
 	private int boardrow;
 	private int boardcol;
-	private int maxsize;
 	public Board mysibbling = null;
 	public Board Leftmostchild = null;
 	public Board myparent = null;
-	private int flag = 0;
-	private ArrayList<block> blockArray = new ArrayList <block>();
+	private ArrayList <block> blockArray = new ArrayList <block>();
 	
 	public Board(int newRows, int newCols) {
 		initBoard(newRows, newCols,0);
@@ -29,13 +26,14 @@ public class Board{
     	if ((newRows >= 1) && (newCols >= 1)) {
     		boardrow = newRows;
     		boardcol = newCols;
-    		maxsize = newRows * newCols;
+
     	}
     }
 	
-    
+
     public int adding_block(int len, int wid, int row, int col){
-    	block currentblock = null;
+
+     	block currentblock = null;
     	int i = 0;
     	Iterator <block> iter = blockArray.iterator();
     	if (row+len > boardrow)
@@ -43,24 +41,74 @@ public class Board{
     	else if (col+wid > boardcol)
     		return 1;
     	block b0 = new block(len, wid, row, col, block_num);
-    	if(!iter.hasNext()){
+    	if(blockArray.size() == 0){
     		blockArray.add(b0);
     		block_num++;
     		return 0;
     	}
+    	if (blockArray.size() == 1){
+    		currentblock = iter.next();
+    		if (compare(b0, currentblock) == -1){
+    			blockArray.add(0, b0);
+    			block_num++;
+    		}else{
+    			blockArray.add(b0);
+    			block_num++;}
+    	return 0;
+    	}
     	while (iter.hasNext()){
     		currentblock = iter.next();
-    		if (b0.getrow() > currentblock.getrow() && b0.getcol() > currentblock.getcol()){
-    			flag =1;
-    			break;
-    		}else{
+    		while (compare(b0, currentblock) == 1 && iter.hasNext()){
+    			currentblock = iter.next();
     			i++;
     		}
     	}
-		if (flag == 1){
-    	blockArray.add(i, b0);
-		block_num++;}
-    	return 0;
+    	if (iter.hasNext()){
+    		blockArray.add(i, b0);
+    		block_num++;
+    	}else{
+    		if (compare(b0, currentblock) == 1){
+    			blockArray.add(b0);
+    			block_num++;
+    		}else{	
+    			blockArray.add(i, b0);
+    			block_num++;
+    		}
+    	}
+    	return 0;	
+    }
+    
+	public int compare(block o1, block o2){
+		if (o1.getrow() < o2.getrow() || ((o1.getrow() == o2.getrow() && o1.getcol() < o2.getcol())))
+			return -1;
+		else if (o1.getrow() == o2.getrow() && o1.getcol() == o2.getcol())
+			return 0;
+		else 
+			return 1;
+	}
+    
+    public void displayboard(){
+    	int [][] myblock = new int[boardrow][boardcol];
+    	block currentblock = null;
+    	int i,j;
+    	Iterator <block> iter = blockArray.iterator();
+    	while (iter.hasNext()){
+    		currentblock = iter.next();
+    		for (i = 0; i < this.boardrow; i++){
+    			for (j = 0; j < this.boardcol; j++){
+    				if ((i >= currentblock.getrow() && i < currentblock.getrow() + currentblock.getlength()) && (j >= currentblock.getcol() && j < currentblock.getcol() + currentblock.getwidth()))    		
+    					myblock[i][j] = currentblock.getID();
+    			}
+    		}
+    	}
+    		for (i = 0; i < this.boardrow; i++){
+    			for (j = 0; j < this.boardcol; j++){
+    				System.out.print(myblock[i][j] + " ");
+    			}
+    			System.out.println("");
+    		}
+
+    		
     }
     
     public void display(){
@@ -68,6 +116,10 @@ public class Board{
     	while(iter.hasNext())
     		System.out.println(iter.next().getID());		
     }
+    
+  /*  public void moveleft(){
+    	if (this.g)
+    }*/
     
     /*
     public int adding_block(int len, int wid, int row, int col){
