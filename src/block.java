@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 public class block { 
 
 //	private int block_len;
@@ -99,13 +99,13 @@ public class block {
 	MoveTo(block_pos.getRow(),block_pos.getCol()-1);
 	}
 	public void MoveRight(){
-		MoveTo(block_pos.getRow(),block_pos.getCol()+this.get_block_wid());
+		MoveTo(block_pos.getRow(),block_pos.getCol()+1);
 		}
 	public void MoveUp(){
 		MoveTo(block_pos.getRow()-1,block_pos.getCol());
 		}
 	public void MoveDown(){
-		MoveTo(block_pos.getRow()+this.get_block_len(),block_pos.getCol());
+		MoveTo(block_pos.getRow()+1,block_pos.getCol());
 		}
 	
 	

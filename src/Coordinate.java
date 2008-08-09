@@ -23,4 +23,7 @@ public void setCol(int value){
 public int  getCol(){
 	return col;
 }
+public boolean equals(Object b){
+	return (row==((Coordinate)b).getRow())&&(col==((Coordinate)b).getCol());
+}
 }
