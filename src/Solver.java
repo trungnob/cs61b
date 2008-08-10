@@ -6,7 +6,10 @@ import java.util.*;
 
 public class Solver {
 	static ArrayList<Board> tray = new ArrayList<Board> ();
-	
+	static HashMap<String,Board> trayMap = new HashMap<String,Board>();
+	static HashSet<Board> traySet = new HashSet<Board>(100,1);
+	static ArrayList<block> Goal =new ArrayList<block>(); 
+	static int globalCount;
 ////////////////////get the initial configuration and print the board //////////////////
 	public static Board board_setup(String filename) throws IOException{
 
@@ -120,14 +123,18 @@ public class Solver {
     }
 	*/
     
-	public static boolean nextMove(Board brd){
-		boolean result=false;
+	public static int nextMove(Board brd){
+		int result=0;
 		brd.constructListofMovableBlocks();
 		Board boardToAdd=(Board)brd.clone();
 		for (Iterator<block> iter=brd.movableBlockUp.iterator();iter.hasNext(); ){
 			block b=iter.next();
 			if (brd.MoveUp(b)){ 
 			//System.out.println(b.getID()+" U");
+				if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return -1;
+				}
 			boardToAdd=(Board)brd.clone();
 			if (tray.contains(boardToAdd)){
 				
@@ -138,7 +145,7 @@ public class Solver {
 			else{
 		    tray.add(boardToAdd);
 		    //System.out.println("This board will be add in!");
-		    result=true;
+		    result=1;
 		    //brd.displayBoard();
 			}
 			
@@ -151,8 +158,13 @@ public class Solver {
 		for (Iterator<block> iter=brd.movableBlockDown.iterator();iter.hasNext(); ){
 			block b=iter.next();
 			if(brd.MoveDown(b)){
+				if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return -1;
+				}
 			//System.out.println(b.getID()+" D");
 			boardToAdd=(Board)brd.clone();
+			brd.compareToGoal(Goal);
 			if (tray.contains(boardToAdd)){
 //			     System.out.println("no day ne "+tray.indexOf(boardToAdd));
 //			     tray.get(tray.indexOf(boardToAdd)).displayBoard();
@@ -160,7 +172,7 @@ public class Solver {
 			}
 			else{
 		    tray.add(boardToAdd);
-		    result=true;
+		    result=1;
 		    //System.out.println("This board will be add in!");
 		    //brd.displayBoard();
 		    
@@ -174,6 +186,10 @@ public class Solver {
 		for (Iterator<block> iter=brd.movableBlockLeft.iterator();iter.hasNext(); ){
 			block b=iter.next();
 			if (brd.MoveLeft(b)){
+				if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return -1;
+				}
 			//System.out.println(b.getID()+" L");
 			boardToAdd=(Board)brd.clone();
 			if (tray.contains(boardToAdd)){
@@ -183,7 +199,7 @@ public class Solver {
 		    tray.add(boardToAdd);
 		    //System.out.println("This board will be add in!");
 		    //brd.displayBoard();
-		    result=true;
+		    result=1;
 			}
 			
 			brd.MoveRight(b);
@@ -195,6 +211,10 @@ public class Solver {
 			block b=iter.next();
 			if (brd.MoveRight(b)){
 				//System.out.println(b.getID()+" R");
+				if (brd.compareToGoal(Goal)){
+				//	brd.displayBoard();
+					return -1;
+				}
 				boardToAdd=(Board)brd.clone();
 				if (tray.contains(boardToAdd)){
 //				     System.out.println("no day ne "+tray.indexOf(boardToAdd));
@@ -204,8 +224,8 @@ public class Solver {
 				else{
 			    tray.add(boardToAdd);
 			   // System.out.println("This board will be add in!");
-			    result=true;
-			   // brd.displayBoard();
+			    result=1;
+			 //   brd.displayBoard();
 				}
 				
 				brd.MoveLeft(b);
@@ -219,6 +239,249 @@ public class Solver {
 		
 	}
 	
+	public static int nextMove3(Board brd){
+		globalCount=0;
+		int result=0;
+		brd.constructListofMovableBlocks();
+		Board boardToAdd=(Board)brd.clone();
+		for (Iterator<block> iter=brd.movableBlockUp.iterator();iter.hasNext(); ){
+			block b=iter.next();
+			if (brd.MoveUp(b)){ 
+			//System.out.println(b.getID()+" U");
+				if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return -1;
+				}
+			boardToAdd=(Board)brd.clone();
+			if (traySet.contains(boardToAdd)){
+				
+//			     System.out.println("no day ne "+tray.indexOf(boardToAdd)+" "+tray.size());
+//			     tray.get(tray.indexOf(boardToAdd)).displayBoard();
+//			     System.out.println("*******************end*******************");
+			}
+			else{
+		    traySet.add(boardToAdd);
+		    globalCount=1;
+		    tray.add(boardToAdd);
+		    //System.out.println("This board will be add in!");
+		    result=1;
+		    //brd.displayBoard();
+			}
+			
+			brd.MoveDown(b);
+			}
+			else 
+				System.out.println(b.getID()+" Something Wrong Up");
+			
+		}
+		for (Iterator<block> iter=brd.movableBlockDown.iterator();iter.hasNext(); ){
+			block b=iter.next();
+			if(brd.MoveDown(b)){
+				if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return -1;
+				}
+			//System.out.println(b.getID()+" D");
+			boardToAdd=(Board)brd.clone();
+			brd.compareToGoal(Goal);
+			if (traySet.contains(boardToAdd)){
+//			     System.out.println("no day ne "+tray.indexOf(boardToAdd));
+//			     tray.get(tray.indexOf(boardToAdd)).displayBoard();
+//			     System.out.println("*******************end*******************");
+			}
+			else{
+		    traySet.add(boardToAdd);
+		    globalCount=1;
+		    tray.add(boardToAdd);
+		    result=1;
+		    //System.out.println("This board will be add in!");
+		    //brd.displayBoard();
+		    
+			}
+			
+			brd.MoveUp(b);
+			}
+			else 
+				System.out.println(b.getID()+ " Something Wrong Down");
+		}
+		for (Iterator<block> iter=brd.movableBlockLeft.iterator();iter.hasNext(); ){
+			block b=iter.next();
+			if (brd.MoveLeft(b)){
+				if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return -1;
+				}
+			//System.out.println(b.getID()+" L");
+			boardToAdd=(Board)brd.clone();
+			if (traySet.contains(boardToAdd)){
+			     
+			}
+			else{
+		    traySet.add(boardToAdd);
+		    tray.add(boardToAdd);
+		    globalCount=1;
+		   // System.out.println("This board will be add in!");
+		    //brd.displayBoard();
+		    result=1;
+			}
+			
+			brd.MoveRight(b);
+			}
+			else 
+				System.out.println(b.getID()+" Something Wrong L");
+		}
+		for (Iterator<block> iter=brd.movableBlockRight.iterator();iter.hasNext(); ){
+			block b=iter.next();
+			if (brd.MoveRight(b)){
+				//System.out.println(b.getID()+" R");
+				if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return -1;
+				}
+				boardToAdd=(Board)brd.clone();
+				if (traySet.contains(boardToAdd)){
+//				     System.out.println("no day ne "+tray.indexOf(boardToAdd));
+//				     tray.get(tray.indexOf(boardToAdd)).displayBoard();
+//				     System.out.println("*******************end*******************");
+				}
+				else{
+			    traySet.add(boardToAdd);
+			    tray.add(boardToAdd);
+			    //System.out.println("This board will be add in!");
+			    result=1;
+			    globalCount=1;
+			    //brd.displayBoard();
+				}
+				
+				brd.MoveLeft(b);
+			}
+			
+			else 
+				System.out.println(b.getID()+" Something Wrong R");
+		}
+		
+		return result;
+		
+	}
+	
+	
+	public static HashMap<String,Board> nextMove2(Board brd){
+		int result=0;
+		HashMap<String, Board> trayMap2= new HashMap<String,Board>();
+		
+		brd.constructListofMovableBlocks();
+		Board boardToAdd=(Board)brd.clone();
+		for (Iterator<block> iter=brd.movableBlockUp.iterator();iter.hasNext(); ){
+			block b=iter.next();
+			if (brd.MoveUp(b)){ 
+			//System.out.println(b.getID()+" U");
+//				if (brd.compareToGoal(Goal)){
+	//				brd.displayBoard();
+//					return null;
+//				}
+			boardToAdd=(Board)brd.clone();
+			if (trayMap.containsValue(boardToAdd)){
+				
+//			     System.out.println("no day ne "+tray.indexOf(boardToAdd)+" "+tray.size());
+//			     tray.get(tray.indexOf(boardToAdd)).displayBoard();
+//			     System.out.println("*******************end*******************");
+			}
+			else{
+		    trayMap2.put(boardToAdd.toString(), boardToAdd);
+		    System.out.println("This board will be add in!");
+		    result=1;
+		    brd.displayBoard();
+			}
+			
+			brd.MoveDown(b);
+			}
+			else 
+				System.out.println(b.getID()+" Something Wrong Up");
+			
+		}
+		for (Iterator<block> iter=brd.movableBlockDown.iterator();iter.hasNext(); ){
+			block b=iter.next();
+			if(brd.MoveDown(b)){
+			if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return null;
+				}
+			//System.out.println(b.getID()+" D");
+			boardToAdd=(Board)brd.clone();
+		//	brd.compareToGoal(Goal);
+			if (trayMap.containsValue(boardToAdd)){
+//			     System.out.println("no day ne "+tray.indexOf(boardToAdd));
+//			     tray.get(tray.indexOf(boardToAdd)).displayBoard();
+//			     System.out.println("*******************end*******************");
+			}
+			else{
+				trayMap2.put(boardToAdd.toString(), boardToAdd);
+		    result=1;
+		    System.out.println("This board will be add in!");
+		    brd.displayBoard();
+		    
+			}
+			
+			brd.MoveUp(b);
+			}
+			else 
+				System.out.println(b.getID()+ " Something Wrong Down");
+		}
+		for (Iterator<block> iter=brd.movableBlockLeft.iterator();iter.hasNext(); ){
+			block b=iter.next();
+			if (brd.MoveLeft(b)){
+	if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return null;
+				}
+			//System.out.println(b.getID()+" L");
+			boardToAdd=(Board)brd.clone();
+			if (trayMap.containsValue(boardToAdd)){
+			     
+			}
+			else{
+				trayMap2.put(boardToAdd.toString(), boardToAdd);
+		    System.out.println("This board will be add in!");
+		    brd.displayBoard();
+		    result=1;
+			}
+			
+			brd.MoveRight(b);
+			}
+			else 
+				System.out.println(b.getID()+" Something Wrong L");
+		}
+		for (Iterator<block> iter=brd.movableBlockRight.iterator();iter.hasNext(); ){
+			block b=iter.next();
+			if (brd.MoveRight(b)){
+				//System.out.println(b.getID()+" R");
+				if (brd.compareToGoal(Goal)){
+					brd.displayBoard();
+					return null;
+				}
+				boardToAdd=(Board)brd.clone();
+				if (trayMap.containsValue(boardToAdd)){
+//				     System.out.println("no day ne "+tray.indexOf(boardToAdd));
+//				     tray.get(tray.indexOf(boardToAdd)).displayBoard();
+//				     System.out.println("*******************end*******************");
+				}
+				else{
+					trayMap2.put(boardToAdd.toString(), boardToAdd);
+			   System.out.println("This board will be add in!");
+			    result=1;
+			    brd.displayBoard();
+				}
+				
+				brd.MoveLeft(b);
+			}
+			
+			else 
+				System.out.println(b.getID()+" Something Wrong R");
+		}
+		
+		return trayMap2;
+		
+	}
 	/*
 	public Board generatemove(Board brd){
     	Board board;
@@ -304,60 +567,76 @@ public class Solver {
         my_board = board_setup(inputConfigName);
         System.out.println();
         
-//       ArrayList<block>theGoal= getGoal(finalConfigName);
-//        System.out.println(my_board.compareToGoal(theGoal));
-//         block b=my_board.findBlockByID(1);
-//         tray.add(my_board);
-////        if (b==null) System.out.println("It is null!!\n");else 
-//        System.out.println( my_board.MoveRight(b));
-//        ArrayList<Board> linkList=new ArrayList<Board>();
-//        linkList.add(my_board);
-//        Board new_board=(Board)my_board.clone();
-//        System.out.println(linkList.contains(new_board));
-//       my_board.displayBoard();
-//        System.out.println();
-//        my_board.displayBoard_db();
-//        System.out.println( my_board.MoveDown(b));
-//        my_board.displayBoard();
-//        System.out.println();
-//        my_board.displayBoard_db();
-//        
-//        
-//        
-//        b=my_board.findBlockByID(3);
-//        my_board.MoveUp(b);
-//        System.out.println();
-//        my_board.displayBoard();
-//        System.out.println();
-//        my_board.displayBoard_db();
-//        b=my_board.findBlockByID(6);
-//        my_board.MoveUp(b);
-//        System.out.println();
-//        my_board.displayBoard();
-//        b=my_board.findBlockByID(2);
-//        my_board.MoveLeft(b);
-//        System.out.println();
-//        my_board.displayBoard();
-//        b=my_board.findBlockByID(1);
-//        my_board.MoveDown(b);
-//        System.out.println();
-//        my_board.displayBoard();
+Goal=getGoal(finalConfigName);
         
        System.out.println("Start to test NextMove-----------------");
       
-       nextMove(my_board);
-       int sizeOfTray=tray.size();
-       int oldSizeOfTray=0;
-       while(oldSizeOfTray!=sizeOfTray){
-    	   for (;oldSizeOfTray<sizeOfTray;oldSizeOfTray++){
-    	    	  Board blah=(Board)tray.get(oldSizeOfTray).clone();
-    	    	  //System.out.println("Yes "+oldSizeOfTray);
-    	    	  nextMove(blah);
-    	       }
-    	 	  
-    	   sizeOfTray=tray.size();
-    	   System.out.println("Yes "+sizeOfTray);
-       }
+
+
+//trayMap.put(my_board.toString(),my_board);
+//tray.add(my_board);
+       System.out.println(my_board.hashCode());
+       nextMove3(my_board);
+int sizeOfTray=tray.size();
+int oldSizeOfTray=0;
+int depth=0;
+
+while(true){
+    int a=0;
+	
+//	ArrayList<Board> closedList = new ArrayList<Board>();
+//	HashMap<String, Board> closedMap=new HashMap<String,Board>();
+//	for (int i=0;i<sizeOfTray;i++){
+//		    Board blah=(Board)tray.get(i).clone();
+//		    closedList.add(blah);
+//		    closedMap.put(blah.toString(),blah);
+//	}
+//	tray=new ArrayList<Board>();
+//	trayMap=new HashMap<String,Board>();
+//	trayMap.putAll(closedMap);System.out.println("Size of tray "+tray.size() + " "+trayMap.size()+ " " +closedList.size());
+  for (;oldSizeOfTray<sizeOfTray;oldSizeOfTray++){
+   	    Board blah=(Board)tray.get(oldSizeOfTray).clone();
+   	  //System.out.println("Yes "+oldSizeOfTray);
+   	 if( nextMove3(blah)==-1) {System.out.println("Done!!" + depth+ " "+tray.size());return;}
+   	a=a+globalCount; 
+      }
+  if (a==0) {System.out.println("No Solution!!");return;};
+	  depth++;
+  sizeOfTray=tray.size();
+  System.out.println("Yes "+sizeOfTray + " "+depth + " "+a);
+}
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+	//System.out.println(trayMap.size());
+	
+	
+	
+	
+	
+	
+//       while(oldSizeOfTray!=sizeOfTray){
+//    	   
+//    	   for (Iterator iter = trayMap. ;oldSizeOfTray<sizeOfTray;oldSizeOfTray++){
+//    	    	    Board blah=(Board)trayMap.
+//    	    	
+//    	    	  //System.out.println("Yes "+oldSizeOfTray);
+//    	    	 if( nextMove(blah)==-1) {System.out.println("Done!!" + depth+ " "+tray.size());return;}
+//    	       }
+//    	 	  depth++;
+//    	   sizeOfTray=tray.size();
+//    	   System.out.println("Yes "+sizeOfTray + " "+depth);
+//       }
+       
+       
+       
 //       int num=tray.size();
 //              
 //       for (int i=0;i<num;i++){
@@ -393,7 +672,7 @@ public class Solver {
 //       	  System.out.println("Yes "+i);
 //       	  nextMove(blah);
 //          }
-           System.out.println(tray.size());
+           
            
 //      block b=my_board.findBlockByID(5);
 //      my_board.MoveUp(b);
