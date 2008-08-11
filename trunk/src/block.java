@@ -7,7 +7,7 @@ public class block {
 	private int ID; // ID is the identification number of block which help to distinguish two different block even though it have same shape.
 	private Stack <Move> my_move_stack= new Stack<Move>();
 	public String toString(){
-		String temp= block_pos.getRow()+" "+ block_pos.getCol()+ " " + block_shape.getLength()+" "+block_shape.getWidth();
+		String temp=  block_shape.getLength()+" "+block_shape.getWidth() + " "+block_pos.getRow()+" "+ block_pos.getCol()+ " " +ID;
 		return temp;
 	}
 	public block(){
@@ -31,7 +31,8 @@ public class block {
     	ID=IDnum;
 	}
 	public int hashCode ( ) { 
-		return (get_block_len()-1)*256^3 + (get_block_wid()-1) * 256^2 + (get_block_row()) * 256 + (get_block_col());
+		//return (get_block_len()-1)*256^3 + (get_block_wid()-1) * 256^2 + (get_block_row()) * 256 + (get_block_col());
+		return get_block_len()<<24 |get_block_wid()<<16 |get_block_col()<<8 |get_block_row();
 		//return 1 ; //---> I don't know yet 
 	}
 	
