@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Stack;
 public class block { 
 
 //	private int block_len;
@@ -7,14 +8,13 @@ public class block {
 //	private int block_col;
 	private BlockShape block_shape;
 	private Coordinate block_pos;
-	private int ID; // ID is the identification number of block which help to distinguish two different block even though it have same shape. 
-	public boolean canMoveLeft;
-	public boolean canMoveRight;
-	public boolean canMoveUp;
-	public boolean canMoveDown;
+	private int ID; // ID is the identification number of block which help to distinguish two different block even though it have same shape.
+	private Stack <Move> my_move_stack;
 	public block(){
 //		block_len = 0;
 //		block_wid = 0;
+		Move myMove = new Move();
+		my_move_stack.push(myMove);
 		block_shape=new BlockShape();
 		block_pos=new Coordinate();
 	}
@@ -23,6 +23,8 @@ public class block {
 //		block_wid = width;
 //		block_row = row;
 //		block_col = col;
+		Move myMove = new Move();
+		my_move_stack.push(myMove);
 		block_shape=new BlockShape(length,width);
 		block_pos=new Coordinate(row,col);
 	}
@@ -32,6 +34,8 @@ public class block {
 //		block_wid = width;
 //		block_row = row;
 //		block_col = col;
+		Move myMove = new Move();
+		my_move_stack.push(myMove);
 		block_shape=new BlockShape(length,width);
 		block_pos=new Coordinate(row,col);
     	ID=IDnum;
@@ -107,8 +111,46 @@ public class block {
 	public void MoveDown(){
 		MoveTo(block_pos.getRow()+1,block_pos.getCol());
 		}
+	public void SetMove(Move NewMove){
+		my_move_stack.peek().setMove(NewMove);
+	}
+	public void AddMove(Move NewMove){
+		my_move_stack.push(NewMove);
+	}
 	
-	
+	public void ApplyNextMove(){
+		if (my_move_stack.isEmpty()) System.out.println("No move to make");
+		else 
+		ApplyMove(my_move_stack.peek());
+		
+	}
+	public void ApplyMove(Move thisMove){
+		switch (thisMove.getDir()){
+		case 'S' :break;
+		case 'L' : MoveLeft();break;
+		case 'R' : MoveRight();break ;
+		case 'U' : MoveUp(); break;
+		case 'D' :MoveUp();break;
+		default : System.out.println("Dude! Some thing wrong with your move in block class!!!");
+		}
+	}
+	public Move PeekPrevMove(){
+		Move saveCurrentMove;
+		Move PrevMove;
+		if (my_move_stack.isEmpty()){ System.out.println("No move to make"); return null;} 
+		else saveCurrentMove=my_move_stack.pop();
+		if (my_move_stack.isEmpty()) {System.out.println("No Previous Move dude!");return null;}
+		else {
+				PrevMove= my_move_stack.peek();
+				my_move_stack.push(saveCurrentMove);
+				return PrevMove;
+			}
+	}
+	public Move peekMove(){
+		if (my_move_stack.isEmpty()) {System.out.println("No move to make");return null;}
+		else 
+		return my_move_stack.peek();
+	}
 	/*
 	public static void main (String [ ] args){
 		block b0 = new block(10,1,1,1);
