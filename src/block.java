@@ -5,7 +5,11 @@ public class block {
 	private BlockShape block_shape;
 	private Coordinate block_pos;
 	private int ID; // ID is the identification number of block which help to distinguish two different block even though it have same shape.
-	private Stack <Move> my_move_stack;
+	private Stack <Move> my_move_stack= new Stack<Move>();
+	public String toString(){
+		String temp= block_pos.getRow()+" "+ block_pos.getCol()+ " " + block_shape.getLength()+" "+block_shape.getWidth();
+		return temp;
+	}
 	public block(){
 		Move myMove = new Move();
 		my_move_stack.push(myMove);
@@ -32,11 +36,12 @@ public class block {
 	}
 	
 	public boolean equals(Object obj){ // two equal blocks only have meaning when they are both on the same board.
-		if ( (this.get_block_row()== ((block)obj).get_block_row()) && (this.get_block_col() == ((block)obj).get_block_col()) 
-			 && (this.get_block_len() == ((block)obj).get_block_len()) && (this.get_block_wid() == ((block)obj).get_block_wid()) )
-			return true;
-		else
-			return false;
+//		if ( (this.get_block_row()== ((block)obj).get_block_row()) && (this.get_block_col() == ((block)obj).get_block_col()) 
+//			 && (this.get_block_len() == ((block)obj).get_block_len()) && (this.get_block_wid() == ((block)obj).get_block_wid()) )
+//			return true;
+//		else
+//			return false;
+	return this.toString().equals(((block)obj).toString());
 //		return this.ID==((block)obj).ID;
 	}
 	
@@ -121,13 +126,14 @@ public class block {
 		ApplyMove(my_move_stack.peek());
 		
 	}
+	
 	public void ApplyMove(Move thisMove){
 		switch (thisMove.getDir()){
 		case 'S' :break;
 		case 'L' : MoveLeft();break;
 		case 'R' : MoveRight();break ;
 		case 'U' : MoveUp(); break;
-		case 'D' :MoveUp();break;
+		case 'D' :MoveDown();break;
 		default : System.out.println("Dude! Some thing wrong with your move in block class!!!");
 		}
 	}
