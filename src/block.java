@@ -2,27 +2,17 @@ import java.util.ArrayList;
 import java.util.Stack;
 public class block { 
 
-//	private int block_len;
-//	private int block_wid;
-//	private int block_row;
-//	private int block_col;
 	private BlockShape block_shape;
 	private Coordinate block_pos;
 	private int ID; // ID is the identification number of block which help to distinguish two different block even though it have same shape.
 	private Stack <Move> my_move_stack;
 	public block(){
-//		block_len = 0;
-//		block_wid = 0;
 		Move myMove = new Move();
 		my_move_stack.push(myMove);
 		block_shape=new BlockShape();
 		block_pos=new Coordinate();
 	}
 	public block(int length, int width, int row, int col){
-//		block_len = length;
-//		block_wid = width;
-//		block_row = row;
-//		block_col = col;
 		Move myMove = new Move();
 		my_move_stack.push(myMove);
 		block_shape=new BlockShape(length,width);
@@ -30,10 +20,6 @@ public class block {
 	}
 	
 	public block(int length, int width, int row, int col, int IDnum){
-//		block_len = length;
-//		block_wid = width;
-//		block_row = row;
-//		block_col = col;
 		Move myMove = new Move();
 		my_move_stack.push(myMove);
 		block_shape=new BlockShape(length,width);
@@ -41,8 +27,8 @@ public class block {
     	ID=IDnum;
 	}
 	public int hashCode ( ) { 
-		//return (block_len-1)*256^3 + (block_wid-1) * 256^2 + (block_row) * 256 + (block_col);
-		return 1 ; //---> I don't know yet 
+		return (get_block_len()-1)*256^3 + (get_block_wid()-1) * 256^2 + (get_block_row()) * 256 + (get_block_col());
+		//return 1 ; //---> I don't know yet 
 	}
 	
 	public boolean equals(Object obj){ // two equal blocks only have meaning when they are both on the same board.
@@ -91,6 +77,17 @@ public class block {
 	public int get_block_wid(){
 		return block_shape.getWidth();
 	}
+	
+	public BlockShape getShape(){
+		return block_shape;
+	}
+	
+	public Coordinate getCoor(){
+		return block_pos;
+	}
+	
+	
+	
 	public void MoveTo(Coordinate To){
 		block_pos.setCol(To.getCol());
 		block_pos.setRow(To.getRow());
