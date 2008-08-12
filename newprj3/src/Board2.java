@@ -13,19 +13,18 @@ public class Board2 {
 	
 	// block_num keep track of which block we are dealing w/ . 
 	// This is just for displaying purpose. --Trung add 
-	private int block_num = 1;
-	
+	private byte block_num = 1;
+	private Board2 PrevBoard=null;
 	private trayCells bm;
 	//public HashSet<block> blockArray = null;
 	private HashMap<Coordinate,block> blockArray=null;
-	//public priorityQueue<block> blockQueue;
-	public ArrayList<block> movableBlockLeft=null;
-	public ArrayList<block> movableBlockRight=null;
-	public ArrayList<block> movableBlockUp=null;
-	public ArrayList<block> movableBlockDown=null;
-	private static final int CELL_EMPTY = 0;
-	private static final int CELL_OCCUPIED = 1;
-	public static int hashNum=0;
+	
+//	public PriorityQueue<MovableBlock> blockQueue=null;
+//	public ArrayList<block> movableBlockLeft=null;
+//	public ArrayList<block> movableBlockRight=null;
+//	public ArrayList<block> movableBlockUp=null;
+//	public ArrayList<block> movableBlockDown=null;
+
 	public int getRows() {
 		//return board_map.length;
 		return bm.getRows();
@@ -57,10 +56,7 @@ public class Board2 {
     private void initBoard(int newRows, int newCols) {
     	//
     	if ((newRows >= 1) && (newCols >= 1)) {
-        	movableBlockLeft=new ArrayList<block>();
-			movableBlockRight=new ArrayList<block>();
-			movableBlockUp=new ArrayList<block>();
-			movableBlockDown=new ArrayList<block>(); 
+  
     	    bm=new trayCells(newRows,newCols);
     	    blockArray=new HashMap<Coordinate,block>();
    
@@ -164,23 +160,93 @@ public boolean EmptyCell(Coordinate c){
 	}
 		
 }
-public void constructListofMovableBlocks(){
-//	movableBlockUp.removeAll(movableBlockUp);
-//	movableBlockDown.removeAll(movableBlockDown);
-//	movableBlockRight.removeAll(movableBlockRight);
-//	movableBlockLeft.removeAll(movableBlockLeft);
-	movableBlockUp=new ArrayList<block>();
-	movableBlockDown=new ArrayList<block>();
-	movableBlockLeft=new ArrayList<block>();
-	movableBlockRight=new ArrayList<block>();
+//public   PriorityQueue<MovableBlock>  listOfMovableBlocks(){
+//	PriorityQueue<MovableBlock> result=new PriorityQueue<MovableBlock>(); 
+//  for (Iterator<block> iter = blockArray.values().iterator();iter.hasNext();){
+//	 block b = iter.next();
+//	 if ((!result.contains(b))&&(this.EmptyNeighborUp(b))) {
+//		 Move m= new Move('U');
+//		 MovableBlock mb=new MovableBlock(b,m);
+//		 result.add(mb); 
+//	 }
+//	 if ((!result.contains(b))&&(this.EmptyNeighborDown(b))) {
+//		 Move m= new Move('D');
+//		 MovableBlock mb=new MovableBlock(b,m);
+//		 result.add(mb); 
+//	 }
+//	 if ((!result.contains(b))&&(this.EmptyNeighborLeft(b))) {
+//		 Move m= new Move('L');
+//		 MovableBlock mb=new MovableBlock(b,m);
+//		 result.add(mb); 
+//	 }
+//	 if ((!result.contains(b))&&(this.EmptyNeighborLeft(b))) {
+//		 Move m= new Move('R');
+//		 MovableBlock mb=new MovableBlock(b,m);
+//		 result.add(mb); 
+//	 }
+//	 
+//  }
+//  return result;
+//}
+//public   Stack<MovableBlock>  listOfMovableBlocks(){
+//	Stack<MovableBlock> result=new Stack<MovableBlock>(); 
+//  for (Iterator<block> iter = blockArray.values().iterator();iter.hasNext();){
+//	 block b = iter.next();
+//	 if ((!result.contains(b))&&(this.EmptyNeighborUp(b))) {
+//		 Move m= new Move('U');
+//		 MovableBlock mb=new MovableBlock(b,m);
+//		 result.add(mb); 
+//	 }
+//	 if ((!result.contains(b))&&(this.EmptyNeighborDown(b))) {
+//		 Move m= new Move('D');
+//		 MovableBlock mb=new MovableBlock(b,m);
+//		 result.add(mb); 
+//	 }
+//	 if ((!result.contains(b))&&(this.EmptyNeighborLeft(b))) {
+//		 Move m= new Move('L');
+//		 MovableBlock mb=new MovableBlock(b,m);
+//		 result.add(mb); 
+//	 }
+//	 if ((!result.contains(b))&&(this.EmptyNeighborLeft(b))) {
+//		 Move m= new Move('R');
+//		 MovableBlock mb=new MovableBlock(b,m);
+//		 result.add(mb); 
+//	 }
+//	 
+//  }
+//  return result;
+//}
+public   TreeSet<Move>  listOfMovableBlocks(){
+	TreeSet<Move> result=new TreeSet<Move>(); 
   for (Iterator<block> iter = blockArray.values().iterator();iter.hasNext();){
 	 block b = iter.next();
-	 if ((!this.movableBlockUp.contains(b))&&(this.EmptyNeighborUp(b))) movableBlockUp.add(b); 
-	 if ((!this.movableBlockDown.contains(b))&&(this.EmptyNeighborDown(b))) movableBlockDown.add(b);
-	 if ((!this.movableBlockLeft.contains(b))&&(this.EmptyNeighborLeft(b))) movableBlockLeft.add(b);
-	 if ((!this.movableBlockRight.contains(b))&&(this.EmptyNeighborRight(b))) movableBlockRight.add(b);
+	 if ((this.EmptyNeighborUp(b))) {
+	      Move nm= new Move(b,'U');
+	      if (result.contains(nm));else
+		 result.add(nm); 
+	 }
+	 if ((this.EmptyNeighborDown(b))) {
+		 Move nm= new Move(b,'D');  
+		 
+		 if (result.contains(nm));else
+			 result.add(nm); 
+		  
+	 }
+	 if ((this.EmptyNeighborLeft(b))) {
+		 Move nm= new Move(b,'L');  
+		 if (result.contains(nm));else
+			 result.add(nm); 
+	 }
+	 if ((this.EmptyNeighborRight(b))) {
+		 Move nm= new Move(b,'R');  
+		 if (result.contains(nm));else
+			 result.add(nm); 
+	 }
+	 
   }
+  return result;
 }
+
 public boolean EmptyBlock(Coordinate c, BlockShape bs){ // check a block is empty or not start at its  up left conner
 	int row=c.getRow(),
 	 col=c.getCol(),
@@ -278,7 +344,7 @@ public boolean MoveLeft(block b){
 	Coordinate coor= new Coordinate(b.get_block_row(),b.get_block_col());
 	block newB=blockArray.remove(coor);
 	if (EmptyNeighborLeft(newB)){  
-		hashNum++;
+		
 		newB.ApplyMove(MoveLeft);
 		//newB.AddMove(MoveLeft);
 		setMoveLeft(save.getCoor(),save.getShape());
@@ -288,13 +354,29 @@ public boolean MoveLeft(block b){
 	else return false;
 }
 
+//public boolean MoveLeft(MovableBlock b){
+//Move MoveLeft=new Move('L');
+//block save=new block(b.get_block_len(),b.get_block_wid(),b.get_block_row(),b.get_block_col(),b.getID());
+//Coordinate coor= new Coordinate(b.get_block_row(),b.get_block_col());
+//MovableBlock newB=(MovableBlock)blockArray.remove(coor);
+//if (EmptyNeighborLeft(newB)){  
+//	;
+//	newB.ApplyMove(MoveLeft);
+//	//newB.AddMove(MoveLeft);
+//	setMoveLeft(save.getCoor(),save.getShape());
+//	blockArray.put(newB.getCoor(),newB);
+//	return true;
+//}
+//else return false;
+//}
+
 public boolean MoveRight(block b){
 	Move MoveRight=new Move('R');
 	block save =new block(b.get_block_len(),b.get_block_wid(),b.get_block_row(),b.get_block_col(),b.getID());
 	Coordinate coor= new Coordinate(b.get_block_row(),b.get_block_col());
 	block newB=blockArray.remove(coor);
 	if (EmptyNeighborRight(newB)){
-		hashNum++;
+
 		newB.ApplyMove(MoveRight);
 		//newB.AddMove(MoveRight);
 		setMoveRight(save.getCoor(),save.getShape());
@@ -303,6 +385,21 @@ public boolean MoveRight(block b){
 	}
 	else return false;
 }
+//public boolean MoveRight(MovableBlock b){
+//	Move MoveRight=new Move('R');
+//	block save=new block(b.get_block_len(),b.get_block_wid(),b.get_block_row(),b.get_block_col(),b.getID());
+//	Coordinate coor= new Coordinate(b.get_block_row(),b.get_block_col());
+//	MovableBlock newB=(MovableBlock)blockArray.remove(coor);
+//	if (EmptyNeighborLeft(newB)){  
+//		;
+//		newB.ApplyMove(MoveRight);
+//		//newB.AddMove(MoveLeft);
+//		setMoveLeft(save.getCoor(),save.getShape());
+//		blockArray.put(newB.getCoor(),newB);
+//		return true;
+//	}
+//	else return false;
+//	}
 
 public boolean MoveUp(block b){
 	Move MoveUp=new Move('U');
@@ -312,7 +409,7 @@ public boolean MoveUp(block b){
 	Coordinate coor= new Coordinate(b.get_block_row(),b.get_block_col());
 	block newB=blockArray.remove(coor);
 	if (EmptyNeighborUp(newB)){
-		hashNum++;
+		
 		newB.ApplyMove(MoveUp);
 		//newB.AddMove(MoveUp);
 		setMoveUp(save.getCoor(),save.getShape());
@@ -321,6 +418,21 @@ public boolean MoveUp(block b){
 	}
 	else return false;
 }
+//public boolean MoveUp(MovableBlock b){
+//	Move MoveUp=new Move('U');
+//	block save=new block(b.get_block_len(),b.get_block_wid(),b.get_block_row(),b.get_block_col(),b.getID());
+//	Coordinate coor= new Coordinate(b.get_block_row(),b.get_block_col());
+//	MovableBlock newB=(MovableBlock)blockArray.remove(coor);
+//	if (EmptyNeighborLeft(newB)){  
+//		;
+//		newB.ApplyMove(MoveUp);
+//		//newB.AddMove(MoveLeft);
+//		setMoveLeft(save.getCoor(),save.getShape());
+//		blockArray.put(newB.getCoor(),newB);
+//		return true;
+//	}
+//	else return false;
+//	}
 
 public boolean MoveDown(block b){
 	Move MoveDown=new Move('D');
@@ -328,7 +440,7 @@ public boolean MoveDown(block b){
 	Coordinate coor= new Coordinate(b.get_block_row(),b.get_block_col());
 	block newB=blockArray.remove(coor);
 	if (EmptyNeighborDown(newB)){
-		hashNum++;
+		
 		newB.ApplyMove(MoveDown);
 		//newB.AddMove(MoveDown);
 		setMoveDown(save.getCoor(),save.getShape());
@@ -338,6 +450,21 @@ public boolean MoveDown(block b){
 	else return false;
 }
 
+//public boolean MoveDown(MovableBlock b){
+//	Move MoveDown=new Move('D');
+//	block save=new block(b.get_block_len(),b.get_block_wid(),b.get_block_row(),b.get_block_col(),b.getID());
+//	Coordinate coor= new Coordinate(b.get_block_row(),b.get_block_col());
+//	MovableBlock newB=(MovableBlock)blockArray.remove(coor);
+//	if (EmptyNeighborLeft(newB)){  
+//		;
+//		newB.ApplyMove(MoveDown);
+//		//newB.AddMove(MoveLeft);
+//		setMoveLeft(save.getCoor(),save.getShape());
+//		blockArray.put(newB.getCoor(),newB);
+//		return true;
+//	}
+//	else return false;
+//	}
 	public int hashCode ( ) { 
 //		Iterator<block> iter = blockArray.iterator();
 //		block b;
@@ -383,6 +510,15 @@ public boolean compareToGoal(ArrayList<block> Goal ){
   	}
   	return true;
   }
+public void doMove(Move move){
+	if (move.getDir()=='U')MoveUp(move.getBlock());
+	else
+	if (move.getDir()=='L')MoveLeft(move.getBlock());
+	else
+	if (move.getDir()=='R')MoveRight(move.getBlock());
+	else
+		if (move.getDir()=='D')MoveDown(move.getBlock());
+}
 public String toString(){
 	int i,j;
 	 String temp="";
@@ -434,14 +570,13 @@ public static void main (String [ ] args){
 	  newBoard.adding_block(2,2,4,2);
 	 // newBoard.addblocks(b3);
 	  newBoard.displayBoard();
-	  newBoard.constructListofMovableBlocks();
-	 Iterator<block> iter= newBoard.movableBlockDown.iterator();
-	 Iterator<block> iter2= newBoard.movableBlockUp.iterator();
-	block  b=iter2.next();
+	 TreeSet<Move>lmb=newBoard.listOfMovableBlocks();
+	 System.out.println(lmb.size());
+	Iterator<Move>  iter = lmb.iterator() ;
+	Move mbm=iter.next();
+	mbm.doMove();
 	
-	 newBoard.MoveUp(b);
-	 newBoard.MoveUp(b);
-	 
+ 
 	 System.out.println();
 	 newBoard.displayBoard();
 	 Board2 newnewBoard= (Board2)newBoard.clone();

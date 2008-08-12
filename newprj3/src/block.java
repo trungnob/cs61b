@@ -1,5 +1,5 @@
-import java.util.Stack;
-public class block implements Comparable { 
+
+public class block implements Comparable<block> { 
 
 	private BlockShape block_shape;
 	private Coordinate block_pos;
@@ -15,6 +15,11 @@ public class block implements Comparable {
 		block_shape=new BlockShape();
 		block_pos=new Coordinate();
 		ID=0;
+	}
+	public block(block b){
+		block_shape=b.block_shape;
+		block_pos=b.block_pos;
+		ID=b.getID();
 	}
 	public block(int length, int width, int row, int col){
 		//my_move_stack=new Stack<Move>();
@@ -89,50 +94,61 @@ public class block implements Comparable {
 		return block_pos;
 	}
 	
-	public void MoveTo(Coordinate To){
-		block_pos.setCol(To.getCol());
-		block_pos.setRow(To.getRow());
-	}
-	public void MoveTo(int Row, int Col){
-		block_pos.setCol(Col);
-		block_pos.setRow(Row);
-	}
-	public void MoveLeft(){
-	MoveTo(block_pos.getRow(),block_pos.getCol()-1);
-	}
-	public void MoveRight(){
-		MoveTo(block_pos.getRow(),block_pos.getCol()+1);
-		}
-	public void MoveUp(){
-		MoveTo(block_pos.getRow()-1,block_pos.getCol());
-		}
-	public void MoveDown(){
-		MoveTo(block_pos.getRow()+1,block_pos.getCol());
-		}
-	public void SetMove(Move NewMove){
-	//	my_move_stack.peek().setMove(NewMove);
-	}
-	public void AddMove(Move NewMove){
-	//	my_move_stack.push(NewMove);
-	}
-	
-	public void ApplyNextMove(){
-	//	if (my_move_stack.isEmpty()) System.out.println("No move to make");
-		//else 
-		//ApplyMove(my_move_stack.peek());
+
+	public int compareTo(block o){
 		
+		 
+		if (o.get_block_col()>this.get_block_col()) return -1;
+		else if (o.get_block_col()<this.get_block_col()) return 1;
+		else if (o.get_block_row()>this.get_block_row()) return -1;
+		else if (o.get_block_row()<this.get_block_row()) return 1;
+		else return 0;
+			
+}
+public void MoveTo(Coordinate To){
+getCoor().setCol(To.getCol());
+getCoor().setRow(To.getRow());
+}
+public void MoveTo(int Row, int Col){
+getCoor().setCol(Col);
+getCoor().setRow(Row);
+}
+public void MoveLeft(){
+MoveTo(get_block_row(),get_block_col()-1);
+}
+public void MoveRight(){
+MoveTo(get_block_row(),get_block_col()+1);
+}
+public void MoveUp(){
+MoveTo(get_block_row()-1,get_block_col());
+}
+public void MoveDown(){
+MoveTo(get_block_row()+1,get_block_col());
+}
+
+
+public void ApplyMove(Move thisMove){
+switch (thisMove.getDir()){
+case 'S' :break;
+case 'L' : MoveLeft();break;
+case 'R' : MoveRight();break ;
+case 'U' : MoveUp(); break;
+case 'D' :MoveDown();break;
+default : System.out.println("Dude! Some thing wrong with your move in block class!!!");
+}
+}
+public void ApplyMove(char dir){
+	switch (dir){
+	case 'S' :break;
+	case 'L' : MoveLeft();break;
+	case 'R' : MoveRight();break ;
+	case 'U' : MoveUp(); break;
+	case 'D' :MoveDown();break;
+	default : System.out.println("Dude! Some thing wrong with your move in block class!!!");
 	}
-	
-	public void ApplyMove(Move thisMove){
-		switch (thisMove.getDir()){
-		case 'S' :break;
-		case 'L' : MoveLeft();break;
-		case 'R' : MoveRight();break ;
-		case 'U' : MoveUp(); break;
-		case 'D' :MoveDown();break;
-		default : System.out.println("Dude! Some thing wrong with your move in block class!!!");
-		}
 	}
+
+
 //	public Move PeekPrevMove(){
 //		Move saveCurrentMove;
 //		Move PrevMove;
@@ -156,21 +172,5 @@ public class block implements Comparable {
 		System.out.println(b0);
 	}*/
 	
-	public int compareTo(Object o){
-//		if (o instanceof block){
-//			block b= (block) o;
-////			if (b.my_move_stack.size()>this.my_move_stack.size()) return -1;
-////			else if (b.my_move_stack.size()==this.my_move_stack.size()) {
-////				if (this.get_block_col()>b.get_block_col()) return 1;
-////				else if (this.get_block_col()<b.get_block_col()) return -1;
-////				else if (this.get_block_row()>b.get_block_row()) return 1;
-////				else if (this.get_block_row()<b.get_block_row()) return -1;
-////				else return 0;
-////			}
-//			else return 1;
-//			
-//		}else  return 0;
-		return 0;
-		
-	}
+	
 }
