@@ -9,7 +9,8 @@ public class Solver {
 	//static HashMap<String,Board2> trayMap = new HashMap<String,Board2>();
 	//static HashSet <String> Boardpics=new HashSet<String>(); 
 	static HashSet<Board2> traySet = new HashSet<Board2>();
-	static Queue<Board2> currentBoards=new LinkedList<Board2>();
+	//static Queue<Board2> currentBoards=new LinkedList<Board2>();
+	static Stack<Board2> myStack=new Stack<Board2>();
 	static ArrayList<block> Goal =new ArrayList<block>(); 
 	static int globalCount;
 ////////////////////get the initial configuration and print the board //////////////////
@@ -169,11 +170,13 @@ public class Solver {
 		globalCount=0;
 		int result=0;
 	//traySet.add(brd);
-	currentBoards.add(brd);
-	while (!currentBoards.isEmpty()){
+	//currentBoards.add(brd);
+		myStack.push(brd);
+	while (!myStack.isEmpty()){
 	
-		System.out.println("SizeofTraySet " + traySet.size() + " Size of Queue"+currentBoards.size() );
-		Board2 moveBoard= (Board2)currentBoards.remove();
+		System.out.println("SizeofTraySet " + traySet.size() + " Size of Queue"+myStack.size() );
+		//Board2 moveBoard= (Board2)currentBoards.remove();
+		Board2 moveBoard= (Board2)myStack.pop();
 		if (moveBoard.compareToGoal(Goal)){
 			moveBoard.displayBoard();
 			return -1;
@@ -181,125 +184,29 @@ public class Solver {
 		if (traySet.contains(moveBoard)){}
 		else{
 			traySet.add(moveBoard);
-		moveBoard.constructListofMovableBlocks();
-		//System.out.println("This Board will be move ");
-	   //moveBoard.displayBoard();
-	   //System.out.println("-----");
-		Board2 boardToAdd;//(Board)brd.clone();
-		for (Iterator<block> iter=moveBoard.movableBlockUp.iterator();iter.hasNext(); ){
-			block b=iter.next();
-			if (moveBoard.MoveUp(b)){ 
-			
-				if (moveBoard.compareToGoal(Goal)){
-					moveBoard.displayBoard();
-					return -1;
-				}
-			boardToAdd=(Board2)moveBoard.clone();
-		
-			
-		   // traySet.add(boardToAdd);
-		    
-		    currentBoards.add(boardToAdd);
-		    
-		    
-		  //  System.out.println("This board will be add in!");
-		    result=1;
-		 //  moveBoard.displayBoard();
-			
-			
-			moveBoard.MoveDown(b);
-			}
-			else 
-				System.out.println(b.getID()+" Something Wrong Up");
-			
-		}
-		for (Iterator<block> iter=moveBoard.movableBlockDown.iterator();iter.hasNext(); ){
-			block b=iter.next();
-			if(moveBoard.MoveDown(b)){
-		
-				if (moveBoard.compareToGoal(Goal)){
-					moveBoard.displayBoard();
-					return -1;
-				}
-			//System.out.println(b.getID()+" D");
-			boardToAdd=(Board2)moveBoard.clone();
-			
-		    //traySet.add(boardToAdd);
-		    
-		    
-		    //tray.add(boardToAdd);
-		    currentBoards.add(boardToAdd);
-		    
-		    result=1;
-		   // System.out.println("This board will be add in!");
-		 //   moveBoard.displayBoard();
-		    
-			
-			
-			moveBoard.MoveUp(b);
-			}
-			else 
-				System.out.println(b.getID()+ " Something Wrong Down");
-		}
-		for (Iterator<block> iter=moveBoard.movableBlockLeft.iterator();iter.hasNext(); ){
-			block b=iter.next();
-			if (moveBoard.MoveLeft(b)){
-			
-				if (moveBoard.compareToGoal(Goal)){
-					moveBoard.displayBoard();
-					return -1;
-				}
-		//	System.out.println(b.getID()+" L");
-			boardToAdd=(Board2)moveBoard.clone();
-			
-		
-		    //traySet.add(boardToAdd);
-		    //tray.add(boardToAdd);
-		    currentBoards.add(boardToAdd);
-		    //globalCount=1;
-		    //System.out.println("This board will be add in!");
-		    //moveBoard.displayBoard();
-		    result=1;
-			
-			
-			moveBoard.MoveRight(b);
-			}
-			else 
-				System.out.println(b.getID()+" Something Wrong L");
-		}
-		for (Iterator<block> iter=moveBoard.movableBlockRight.iterator();iter.hasNext(); ){
-			block b=iter.next();
-			if (moveBoard.MoveRight(b)){
-			//	System.out.println(b.getID()+" R");
-				
-				if (moveBoard.compareToGoal(Goal)){
-					moveBoard.displayBoard();
-					return -1;
-				}
+			TreeSet<Move> lbm =moveBoard.listOfMovableBlocks();
+			Board2 boardToAdd;
+			Iterator<Move> iter=lbm.iterator();
+			while (iter.hasNext()){
 				boardToAdd=(Board2)moveBoard.clone();
+				Move mobileBlock=iter.next();
+				boardToAdd.doMove(mobileBlock);
+				if (traySet.contains(boardToAdd)){}
+				else{
+				if (boardToAdd.compareToGoal(Goal)){
+					boardToAdd.displayBoard();
+					return -1;
+				}
+				myStack.push(boardToAdd);
+				}
 				
-			    //traySet.add(boardToAdd);
-			    //tray.add(boardToAdd);
-			    currentBoards.add(boardToAdd);
-			    //System.out.println("This board will be add in!");
-			    //result=1;
-			    //globalCount=1;
-			   // moveBoard.displayBoard();
-				
-				
-				moveBoard.MoveLeft(b);
-			}
-			
-			else 
-				System.out.println(b.getID()+" Something Wrong R");
-		}
-	}
-	}
-		return result;
 		
+			}
+		}
+	
 	}
-	
-	
+	return 1;
+	}
 //	public static int Solve1(Board2 brd){
 //		globalCount=0;
 //		int result=0;
