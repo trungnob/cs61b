@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Board2 {
 
-	public Board2(int newRows, int newCols) {
+	public Board2(byte newRows, byte newCols) {
 		initBoard(newRows, newCols);
 	}
 //	public Board(int newRows, int newCols,int totalBlocks){
@@ -25,12 +25,12 @@ public class Board2 {
 //	public ArrayList<block> movableBlockUp=null;
 //	public ArrayList<block> movableBlockDown=null;
 
-	public int getRows() {
+	public byte getRows() {
 		//return board_map.length;
 		return bm.getRows();
 	}	
 	
-	public int getCols() {
+	public byte getCols() {
 		return bm.getCols();
 	}
 	
@@ -53,7 +53,7 @@ public class Board2 {
 	}
    
 
-    private void initBoard(int newRows, int newCols) {
+    private void initBoard(byte newRows,byte newCols) {
     	//
     	if ((newRows >= 1) && (newCols >= 1)) {
   
@@ -63,7 +63,7 @@ public class Board2 {
     	}
     }
     
-    public int adding_block(int len, int wid, int row, int col){
+    public int adding_block(byte len, byte wid, byte row, byte col){
     	int i, j;
     	// check if block is place within the board_map
     	if (row+len > bm.getRows())
@@ -72,9 +72,9 @@ public class Board2 {
     		return 1;
     	for (i=row; i<row+len; i++){
     		for (j=col; j<col+wid; j++){
-    			if (bm.getCells(i, j))
+    			if (bm.getCells((byte)i, (byte)j))
     				return 1;
-    			bm.set(i, j);
+    			bm.set((byte) i, (byte)j);
     			
     		}
     	}
@@ -86,7 +86,7 @@ public class Board2 {
 	public void setBoardMap(trayCells newBm){
 		bm=newBm;
 	}
-    public int adding_block(int len, int wid, int row, int col,int ID){
+    public int adding_block(byte len, byte wid, byte row,byte col,byte ID){
     	int i, j;
     	
     	block b0 = new block(len, wid, row, col,ID);//use  block_num as a identification number.
@@ -153,7 +153,7 @@ public boolean EmptyCell(Coordinate c){
 	if ((c.getRow() > bm.getRows())|| (c.getCol()>bm.getCols()))
 	return false;
 	else 
-	{int i=c.getRow(),
+	{byte i=c.getRow(),
 		 j=c.getCol();
 	 return !(bm.getCells(i, j));
 		
@@ -248,7 +248,7 @@ public   TreeSet<Move>  listOfMovableBlocks(){
 }
 
 public boolean EmptyBlock(Coordinate c, BlockShape bs){ // check a block is empty or not start at its  up left conner
-	int row=c.getRow(),
+	byte row=c.getRow(),
 	 col=c.getCol(),
 	 len=bs.getLength(),
 	 wid=bs.getWidth(),
@@ -260,52 +260,52 @@ public boolean EmptyBlock(Coordinate c, BlockShape bs){ // check a block is empt
 	return false;
 	else 
 	{
-	for (int i = row; i<row+len;i++ )
-		for (int j= col;j<col+wid;j++ )
+	for (byte i = row; i<row+len;i++ )
+		for (byte j= col;j<col+wid;j++ )
 			if (bm.getCells(i, j)) return false;
 	 return true;
 	}
 }
 
 public boolean EmptyNeighborLeft(block b){ 
-BlockShape bs=new BlockShape(b.get_block_len(),1);
-Coordinate c= new Coordinate(b.get_block_row(),b.get_block_col()-1);
+BlockShape bs=new BlockShape(b.get_block_len(),(byte)1);
+Coordinate c= new Coordinate(b.get_block_row(),(byte)(b.get_block_col()-1));
 return EmptyBlock(c,bs);	
 }
 public boolean EmptyNeighborRight(block b){ 
-	BlockShape bs=new BlockShape(b.get_block_len(),1);
-	Coordinate c= new Coordinate(b.get_block_row(),b.get_block_col()+b.get_block_wid());
+	BlockShape bs=new BlockShape(b.get_block_len(),(byte)1);
+	Coordinate c= new Coordinate(b.get_block_row(),(byte)(b.get_block_col()+b.get_block_wid()));
 	return EmptyBlock(c,bs);	
 }
 public boolean EmptyNeighborUp(block b){ 
-	BlockShape bs=new BlockShape(1,b.get_block_wid());
-	Coordinate c= new Coordinate(b.get_block_row()-1,b.get_block_col());
+	BlockShape bs=new BlockShape((byte)1,b.get_block_wid());
+	Coordinate c= new Coordinate((byte)(b.get_block_row()-1),b.get_block_col());
 	return EmptyBlock(c,bs);	
 }
 public boolean EmptyNeighborDown(block b){ 
-	BlockShape bs=new BlockShape(1,b.get_block_wid());
-	Coordinate c= new Coordinate(b.get_block_row()+b.get_block_len(),b.get_block_col());
+	BlockShape bs=new BlockShape((byte)1,b.get_block_wid());
+	Coordinate c= new Coordinate((byte)(b.get_block_row()+b.get_block_len()),b.get_block_col());
 	return EmptyBlock(c,bs);	
 }
 
 public void setMoveUp(Coordinate c, BlockShape bs){
-	int row=c.getRow(),
+	byte row=c.getRow(),
 	 col=c.getCol(),
 	 len=bs.getLength(),
 	 wid=bs.getWidth();
-	for (int i = col;i<col+wid;i++){
-		bm.set(row-1, i);
-		bm.clear(row+len-1, i);
+	for (byte i = col;i<col+wid;i++){
+		bm.set((byte)(row-1), i);
+		bm.clear((byte)(row+len-1), i);
 	}
 }
 
 public void setMoveDown(Coordinate c, BlockShape bs){
-	int row=c.getRow(),
+	byte row=c.getRow(),
 	 col=c.getCol(),
 	 len=bs.getLength(),
 	 wid=bs.getWidth();
-	for (int i = col;i<col+wid;i++){
-		bm.set(row+len, i);
+	for (byte i = col;i<col+wid;i++){
+		bm.set((byte)(row+len), i);
 		bm.clear(row, i);
 //		board_map[row+len][i]=CELL_OCCUPIED;
 //		board_map[row][i]=CELL_EMPTY;
@@ -313,25 +313,25 @@ public void setMoveDown(Coordinate c, BlockShape bs){
 }
 
 public void setMoveLeft(Coordinate c, BlockShape bs){
-	int row=c.getRow(),
+	byte row=c.getRow(),
 	 col=c.getCol(),
 	 len=bs.getLength(),
 	 wid=bs.getWidth();
-	for (int i = row;i<row+len;i++){
-		bm.set(i, col-1);
-		bm.clear(i,col+wid-1);
+	for (byte i = row;i<row+len;i++){
+		bm.set(i, (byte)(col-1));
+		bm.clear(i,(byte)(col+wid-1));
 //		board_map[i][col-1]=CELL_OCCUPIED;
 //		board_map[i][col+wid-1]=CELL_EMPTY;
 	}
 }
 
 public void setMoveRight(Coordinate c, BlockShape bs){
-	int row=c.getRow(),
+	byte row=c.getRow(),
 	 col=c.getCol(),
 	 len=bs.getLength(),
 	 wid=bs.getWidth();
-	for (int i = row;i<row+len;i++){
-		bm.set(i, col+wid);
+	for (byte i = row;i<row+len;i++){
+		bm.set(i, (byte)(col+wid));
 		bm.clear(i,col);
 //		board_map[i][col+wid]=CELL_OCCUPIED;
 //		board_map[i][col]=CELL_EMPTY;
@@ -489,6 +489,8 @@ public boolean MoveDown(block b){
 	}
 	
 	public boolean equals(Object obj){ 
+		Board2 bt=(Board2) obj;
+		if (!(bt.bm.equals(bt.bm))) return false;
 		Iterator<block> itr0 = ((Board2) obj).blockArray.values().iterator();
 		if ( this.blockArray.size() != ((Board2) obj).blockArray.size() )
 			return false;
@@ -562,12 +564,12 @@ public Object clone(){
 	return result;
 }
 public static void main (String [ ] args){
-	  Board2 newBoard= new Board2(6,5);
+	  Board2 newBoard= new Board2((byte)6,(byte)5);
 	  //block b1= new block(1,1,1,2);
 	  //block b2=new block (2,2,3,3);
 	 // block b3=new block (1,1,4,3);
-	  newBoard.adding_block(1,1,1,2);
-	  newBoard.adding_block(2,2,4,2);
+	  newBoard.adding_block((byte)1,(byte)1,(byte)1,(byte)2);
+	  newBoard.adding_block((byte)2,(byte)2,(byte)4,(byte)2);
 	 // newBoard.addblocks(b3);
 	  newBoard.displayBoard();
 	 TreeSet<Move>lmb=newBoard.listOfMovableBlocks();

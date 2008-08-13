@@ -1,12 +1,12 @@
 
 public class BlockShape {
-	private int length;
-	private int width;
+	private byte length;
+	private byte width;
 	public BlockShape(){
 		length=0;
 		width=0;
 	}
-	public BlockShape(int l, int w){
+	public BlockShape(byte l, byte w){
 		length=l;
 		width=w;
 	}
@@ -14,10 +14,10 @@ public class BlockShape {
 		return (((BlockShape)o).length==this.length && ((BlockShape)o).width==this.width); 
 		
 	}
-	public int getLength(){
+	public byte getLength(){
 	return length;	
 	}
-	public int getWidth(){
+	public byte getWidth(){
 		return width;
 		
 	}

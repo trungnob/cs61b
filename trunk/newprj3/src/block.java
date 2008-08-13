@@ -3,7 +3,7 @@ public class block implements Comparable<block> {
 
 	private BlockShape block_shape;
 	private Coordinate block_pos;
-	private int ID; // ID is the identification number of block which help to print out nice board
+	private byte ID; // ID is the identification number of block which help to print out nice board
 	//private Stack<Move> my_move_stack= new Stack<Move>();
 	public String toString(){
 		String temp=  block_shape.getLength()+" "+block_shape.getWidth() + " "+block_pos.getRow()+" "+ block_pos.getCol()+ " " +ID;
@@ -21,13 +21,13 @@ public class block implements Comparable<block> {
 		block_pos=b.block_pos;
 		ID=b.getID();
 	}
-	public block(int length, int width, int row, int col){
+	public block(byte length, byte width, byte row, byte col){
 		//my_move_stack=new Stack<Move>();
 		block_shape=new BlockShape(length,width);
 		block_pos=new Coordinate(row,col);
 	}
 	
-	public block(int length, int width, int row, int col, int IDnum){
+	public block(byte length, byte width, byte row, byte col, byte IDnum){
 		
 		//my_move_stack=new Stack<Move>();
 		block_shape=new BlockShape(length,width);
@@ -50,7 +50,7 @@ public class block implements Comparable<block> {
 //		return this.ID==((block)obj).ID;
 	}
 	
-	public int getID(){
+	public byte getID(){
 		return ID;
 	}
 	
@@ -70,19 +70,19 @@ public class block implements Comparable<block> {
 			return ""+Integer.toString(num);
 	}*/
 	
-	public int get_block_row(){
+	public byte get_block_row(){
 		return block_pos.getRow();
 	}
 	
-	public int get_block_col(){
+	public byte get_block_col(){
 		return block_pos.getCol();
 	}
 	
-	public int get_block_len(){
+	public byte get_block_len(){
 		return block_shape.getLength();
 	}
 	
-	public int get_block_wid(){
+	public byte get_block_wid(){
 		return block_shape.getWidth();
 	}
 	
@@ -109,21 +109,21 @@ public void MoveTo(Coordinate To){
 getCoor().setCol(To.getCol());
 getCoor().setRow(To.getRow());
 }
-public void MoveTo(int Row, int Col){
+public void MoveTo(byte Row, byte Col){
 getCoor().setCol(Col);
 getCoor().setRow(Row);
 }
 public void MoveLeft(){
-MoveTo(get_block_row(),get_block_col()-1);
+MoveTo(get_block_row(),(byte)(get_block_col()-1));
 }
 public void MoveRight(){
-MoveTo(get_block_row(),get_block_col()+1);
+MoveTo(get_block_row(),(byte)(get_block_col()+1));
 }
 public void MoveUp(){
-MoveTo(get_block_row()-1,get_block_col());
+MoveTo((byte)(get_block_row()-1),get_block_col());
 }
 public void MoveDown(){
-MoveTo(get_block_row()+1,get_block_col());
+MoveTo((byte)(get_block_row()+1),get_block_col());
 }
 
 
