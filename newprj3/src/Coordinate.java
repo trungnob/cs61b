@@ -1,33 +1,35 @@
 import java.awt.Point;
 
 public class Coordinate{
-private Point p;
-//private int row;
-//private int col;
+//private Point p;
+private byte row;
+private byte col;
 public Coordinate(){
-	p= new Point(0,0);
+
+row=0;
+col=0;
 }
-public Coordinate(int row, int col){
- p= new Point(col,row);
+public Coordinate(byte nrow, byte ncol){
+ row=nrow;col=ncol;
 }
-public void setRow(int value){
-	p.y=value;
+public void setRow(byte value){
+	row=value;
 }
-public int  getRow(){
-	return p.y;
+public byte  getRow(){
+	return row;
 }
 
-public void setCol(int value){
-	 p.x=value;
+public void setCol(byte value){
+col=value;
 }
-public int  getCol(){
-	return p.x;
+public byte  getCol(){
+return col;
 }
 public boolean equals(Object b){
- return this.p.equals(((Coordinate)b).p);
+	Coordinate temp=(Coordinate)b;
+ if ((row==temp.row)&&(col==temp.col)) return true; else return false;
 }
 public int hashCode(){
-	return p.hashCode();
-	
+	return ((row<<8)|col);
 }
 }

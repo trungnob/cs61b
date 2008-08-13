@@ -27,17 +27,17 @@ public class Solver {
 		line = initConfig.readLine();
 		StringTokenizer tokens = new StringTokenizer (line, " ");
 		
-		int row = Integer.parseInt((String) tokens.nextElement ( ));
-		int col = Integer.parseInt((String) tokens.nextElement ( ));
+		byte row = (byte)Integer.parseInt((String) tokens.nextElement ( ));
+		byte col = (byte)Integer.parseInt((String) tokens.nextElement ( ));
 		
-		Board2 board= new Board2(row, col);
+		Board2 board= new Board2((byte)row, (byte)col);
 		
 		while ((line=initConfig.readLine()) != null) {
 			tokens = new StringTokenizer (line, " ");
-			int b_len = Integer.parseInt((String) tokens.nextElement ( ));
-			int b_wid = Integer.parseInt((String) tokens.nextElement ( ));
-			int b_row = Integer.parseInt((String) tokens.nextElement ( ));
-			int b_col = Integer.parseInt((String) tokens.nextElement ( ));
+			byte b_len = (byte)Integer.parseInt((String) tokens.nextElement ( ));
+			byte b_wid = (byte)Integer.parseInt((String) tokens.nextElement ( ));
+			byte b_row = (byte)Integer.parseInt((String) tokens.nextElement ( ));
+			byte b_col = (byte)Integer.parseInt((String) tokens.nextElement ( ));
 			
 			board.adding_block(b_len, b_wid, b_row, b_col);
 		}
@@ -71,7 +71,7 @@ public class Solver {
 			int b_row = Integer.parseInt((String) tokens.nextElement ( ));
 			int b_col = Integer.parseInt((String) tokens.nextElement ( ));
 			
-			block b= new block(b_len, b_wid, b_row, b_col);
+			block b= new block((byte)b_len, (byte)b_wid, (byte)b_row, (byte)b_col);
 			result.add(b);
 		}
 		
